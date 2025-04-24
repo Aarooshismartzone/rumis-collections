@@ -1,0 +1,42 @@
+.nav-link {
+    color: white !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #f8f9fa !important;
+}
+
+.searchbox {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    border-radius: 25px;
+    padding-right: 35px; /* Space for the icon */
+}
+
+.searchbox::placeholder {
+    color: white;
+}
+
+.searchbox:focus {
+    background: transparent !important;
+    color: white !important;
+    box-shadow: none !important;
+    border-color: white !important;
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.search-icon:focus {
+    outline: none;
+}

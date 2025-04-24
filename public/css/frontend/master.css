@@ -1,0 +1,121 @@
+/* Navbar */
+
+.navbar-transparent {
+    background: transparent !important;
+}
+
+.navbar-logo {
+    width: 150px;
+    height: auto;
+}
+
+/* accordion */
+
+.accordion-background {
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: ease-in-out;
+    transition-duration: 1s;
+}
+
+.accordion-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding-top: 200px;
+    padding-bottom: 100px;
+}
+
+.main-title {
+    font-family: "Cinzel", serif;
+    text-transform: uppercase;
+    font-size: 60px;
+    letter-spacing: 2.5px;
+}
+
+.main-title span {
+    color: rgb(150, 150, 150);
+}
+
+/* Hero section */
+
+.section-title {
+    font-family: "Cinzel", serif;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 40px;
+    word-spacing: 2px;
+}
+
+.product-card {
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    transition-duration: 0.5s;
+}
+
+.product-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.atc-btn {
+    border: 2px solid black;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    background: linear-gradient(to left, white 50%, black 50%) right;
+    background-size: 200%;
+    transition: .5s ease-out;
+}
+
+.atc-btn:hover {
+    background-position: left;
+    color: white;
+}
+
+.smr-btn {
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: rgb(85, 85, 85);
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px; /* Adds space for the underline */
+}
+
+.smr-btn:hover{
+    color: black;
+}
+
+.smr-btn::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px; /* Places the line slightly below the text */
+    width: 0;
+    height: 3px; /* Thickness of the underline */
+    background-color: black; /* Color of the underline */
+    transition: width 0.3s ease-in-out;
+}
+
+.smr-btn:hover::after {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 600px) {
+    .accordion-overlay {
+        padding-top: 120px;
+        padding-bottom: 50px;
+    }
+
+    .main-title {
+        font-size: 35px;
+    }
+}

@@ -1,0 +1,26 @@
+.master-product{
+    width: 100%;
+    height: auto;
+}
+
+.product-title{
+    font-size: 36px;
+    color: rgb(17, 15, 17);
+}
+
+.product-description{
+    font-weight: bold;
+    color: rgb(101, 100, 100);
+}
+
+.actual-price{
+    color: gray;
+    text-decoration: line-through;
+}
+
+.pd-section-title{
+    text-align: center;
+    font-family: "Cinzel", serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
