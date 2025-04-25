@@ -21,13 +21,13 @@
 
     <div class="section-title pt-4">Cart</div>
     <div class="row mx-4">
-        <div class="col-lg-8 col-md-9 col-12 pe-5">
-            @if ($carts->isEmpty())
-                <div class="text-center">
-                    <h4 class="empty-cart">Your cart is yet to be filled!!</h4>
-                    <p>Please add products to the cart.</p>
-                </div>
-            @else
+        @if ($carts->isEmpty())
+            <div class="text-center">
+                <h4 class="empty-cart">Your cart is yet to be filled!!</h4>
+                <p>Please add products to the cart.</p>
+            </div>
+        @else
+            <div class="col-lg-8 col-md-9 col-12 pe-5">
                 <div class="row py-2" style="border-bottom: 2px solid black;">
                     <div class="col-md-3 col-12">
                         Product
@@ -61,18 +61,19 @@
                         </div>
                     </div>
                 @endforeach
-            @endif
-        </div>
-        <div class="col-lg-4 col-md-3 col-12 ps-5">
-            <div class="py-2 px-4" style="background-color: rgb(212, 212, 212)">
-                <div class="cart-summary">
-                    @include('frontend.cart._totals')
-                </div>
-                <div class="text-end mt-3">
-                    <a href="{{ route('checkout') }}" class="atc-btn mt-3 d-block text-center">Proceed to checkout</a>
+            </div>
+            <div class="col-lg-4 col-md-3 col-12 ps-5">
+                <div class="py-2 px-4" style="background-color: rgb(212, 212, 212)">
+                    <div class="cart-summary">
+                        @include('frontend.cart._totals')
+                    </div>
+                    <div class="text-end mt-3">
+                        <a href="{{ route('checkout') }}" class="atc-btn mt-3 d-block text-center">Proceed to
+                            checkout</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 
     <script>

@@ -14,20 +14,21 @@
                     <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="{{route('frontend.shop')}}" role="button"
+                    <a class="nav-link dropdown-toggle text-white" href="{{ route('frontend.shop') }}" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Shop
                     </a>
                     <ul class="dropdown-menu">
                         @foreach ($categories as $category)
                             <li>
-                                <a class="dropdown-item" href="{{ route('frontend.shop', ['category_slug' => $category->category_slug]) }}">
+                                <a class="dropdown-item"
+                                    href="{{ route('frontend.shop', ['category_slug' => $category->category_slug]) }}">
                                     {{ $category->category_name }}
                                 </a>
                             </li>
                         @endforeach
                     </ul>
-                </li>                
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="#">About</a>
                 </li>
@@ -50,8 +51,13 @@
                         </span>
                     @endif
                 </a>
-                <a href="#" class="text-white me-3">
+                <a href="#" class="text-white me-3 position-relative">
                     <i class="fas fa-heart"></i>
+                    @if ($wishlistCount > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                            {{ $wishlistCount }}
+                        </span>
+                    @endif
                 </a>
                 <a href="#" class="text-white">
                     <i class="fas fa-user"></i>

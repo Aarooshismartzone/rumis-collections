@@ -17,13 +17,18 @@ use Illuminate\Support\Str;
 class frontendController extends Controller
 {
     private $cartCount;
+    private $wishlistCount;
 
     public function __construct()
     {
         $this->cartCount = $this->getCartCount();
+        $this->wishlistCount = $this->getWishlistCount();
 
         // Share cartCount globally with all views
-        view()->share('cartCount', $this->cartCount);
+        view()->share([
+            'cartCount' => $this->cartCount,
+            'wishlistCount' => $this->wishlistCount,
+        ]);
     }
 
     public function home()
@@ -67,9 +72,15 @@ class frontendController extends Controller
     public function viewCart()
     {
         if (Session::has('customer_id')) {
-            $carts = Cart::where('customer_id', Session::get('customer_id'))->get();
+            $carts = Cart::where('customer_id', Session::get('customer_id'))
+                ->where('is_wishlist', 0)
+                ->get();
         } elseif (Session::has('guest_token')) {
-            $carts = Cart::where('guest_token', Session::get('guest_token'))->get();
+            $carts = Cart::where('guest_token', Session::get('guest_token'))
+                ->where('is_wishlist', 0)
+                ->get();
+        } else {
+            $carts = collect(); // empty collection
         }
 
         $totalPrice = $carts->sum(function ($cart) {
@@ -77,6 +88,23 @@ class frontendController extends Controller
         });
 
         return view('frontend.shopping-cart', compact('carts', 'totalPrice'));
+    }
+
+    public function viewWishlist()
+    {
+        if (Session::has('customer_id')) {
+            $carts = Cart::where('customer_id', Session::get('customer_id'))
+                ->where('is_wishlist', 1)
+                ->get();
+        } elseif (Session::has('guest_token')) {
+            $carts = Cart::where('guest_token', Session::get('guest_token'))
+                ->where('is_wishlist', 1)
+                ->get();
+        } else {
+            $carts = collect(); // empty collection
+        }
+
+        return view('frontend.wishlist', compact('carts'));
     }
 
     public function viewCheckoutPage()
@@ -157,7 +185,7 @@ class frontendController extends Controller
         if (!$order) {
             return redirect()->route('frontend.home')->with('error', 'Order not found.');
         }
-        
+
         foreach ($cartItems as $item) {
             $product = $item->product;
 
@@ -187,12 +215,38 @@ class frontendController extends Controller
     private function getCartCount()
     {
         if (Session::has('customer_id')) {
-            return Cart::where('customer_id', Session::get('customer_id'))->count();
+            return Cart::where('customer_id', Session::get('customer_id'))
+                ->where('is_wishlist', 0)
+                ->count();
         } elseif (Session::has('guest_token')) {
-            return Cart::where('guest_token', Session::get('guest_token'))->count();
+            return Cart::where('guest_token', Session::get('guest_token'))
+                ->where('is_wishlist', 0)
+                ->count();
         } else {
             Session::put('guest_token', Str::random(32));
-            return Cart::where('guest_token', Session::get('guest_token'))->count();
+            return Cart::where('guest_token', Session::get('guest_token'))
+                ->where('is_wishlist', 0)
+                ->count();
+        }
+
+        return 0;
+    }
+
+    private function getWishlistCount()
+    {
+        if (Session::has('customer_id')) {
+            return Cart::where('customer_id', Session::get('customer_id'))
+                ->where('is_wishlist', 1)
+                ->count();
+        } elseif (Session::has('guest_token')) {
+            return Cart::where('guest_token', Session::get('guest_token'))
+                ->where('is_wishlist', 1)
+                ->count();
+        } else {
+            Session::put('guest_token', Str::random(32));
+            return Cart::where('guest_token', Session::get('guest_token'))
+                ->where('is_wishlist', 1)
+                ->count();
         }
 
         return 0;

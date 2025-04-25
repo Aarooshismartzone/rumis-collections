@@ -30,17 +30,22 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.success) {
-                    $(".cart-quantity-" + cartId).text(response.newQuantity);
-                    let total = (response.newQuantity * response.itemRate).toFixed(2);
-                    total = Number(total).toLocaleString('en-IN', { minimumFractionDigits: 2 });
-                    $(".cart-amount-" + cartId).text("₹" + total);
+                    //  console.log(response.newQuantity);
+                    if (response.cart_empty) {
+                        location.reload();
+                    }
 
-                    if (response.newQuantity === 0) {
+                    if (response.no_item) {
                         $(".cart-item-" + cartId).fadeOut(300, function () {
                             $(this).remove();
                         });
+                        //  location.reload();
+                    } else {
+                        $(".cart-quantity-" + cartId).text(response.newQuantity);
+                        let total = (response.newQuantity * response.itemRate).toFixed(2);
+                        total = Number(total).toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                        $(".cart-amount-" + cartId).text("₹" + total);
                     }
-
                     // Refresh totals from server
                     updateCartSummary();
                 } else {

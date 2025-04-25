@@ -25,8 +25,10 @@ Route::get('/', [frontendController::class, 'home'])->name('frontend.home');
 Route::get('/shop/{category_slug?}', [frontendController::class, 'shop'])->name('frontend.shop');
 Route::get('/product/{product_slug}', [frontendController::class, 'viewProduct'])->name('frontend.viewproduct');
 Route::get('/product/add-to-cart/{product_slug}', [cartController::class, 'addToCart'])->name('frontend.addtocart');
+Route::get('/product/add-to-wishist/{product_slug}', [cartController::class, 'addToWishlist'])->name('frontend.addtowishlist');
 Route::post('/cart/update', [cartController::class, 'updateCart'])->name('cart.update');
 Route::get('/shopping-cart', [frontendController::class, 'viewCart'])->name('frontend.shoppingcart');
+Route::get('/wishlist', [frontendController::class, 'viewWishlist'])->name('frontend.wishlist');
 Route::post('/cart/refresh-totals', [cartController::class, 'refreshCartTotals'])->name('cart.refreshTotals'); // Partial
 Route::get('/checkout', [frontendController::class, 'viewCheckoutPage'])->name('checkout');
 Route::post('/order/store', [orderController::class, 'addOrder'])->name('order.store');
