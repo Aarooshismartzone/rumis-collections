@@ -51,7 +51,7 @@
                         </span>
                     @endif
                 </a>
-                <a href="#" class="me-3 position-relative" style="color: black">
+                <a href="{{ route('frontend.wishlist') }}" class="me-3 position-relative" style="color: black">
                     <i class="fas fa-heart"></i>
                     @if ($wishlistCount > 0)
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">

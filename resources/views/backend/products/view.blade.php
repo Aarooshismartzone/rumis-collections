@@ -47,8 +47,13 @@
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <p type="submit" style="color: red; margin-left: 10px;"
-                                    onclick="return confirm('Are you sure?')"><i class="fa-solid fa-trash"></i></p>
+
+                                <button type="submit" id="delete-btn-{{ $product->id }}" style="display:none;"></button>
+
+                                <p style="color: red; margin-left: 10px; cursor: pointer;"
+                                    onclick="if(confirm('Are you sure?')) { $('#delete-btn-{{ $product->id }}').click(); }">
+                                    <i class="fa-solid fa-trash"></i>
+                                </p>
                             </form>
                             <a href="{{ route('frontend.viewproduct', $product->product_slug) }}" target="_blank"
                                 style="color: purple; text-decoration: none; margin-left: 10px;"><i

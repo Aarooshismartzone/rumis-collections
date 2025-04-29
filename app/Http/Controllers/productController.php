@@ -97,6 +97,7 @@ class productController extends Controller
             ->where('id', '!=', $product_id)
             ->count();
         $product->product_slug = $count ? "$slug-$count" : $slug;
+        $product->number_of_orders = 0;
 
         foreach ($imageFields as $field) {
             if ($request->hasFile($field)) {

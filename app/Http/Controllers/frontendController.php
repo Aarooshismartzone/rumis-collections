@@ -8,11 +8,15 @@ use App\Models\Product;
 use App\Models\ProductInfo;
 use App\Models\Cart;
 use App\Models\Generic;
+use App\Models\Note;
 use App\Models\Order;
 use App\Models\Orderitem;
 use App\Models\ProductCategory;
+use Carbon\Carbon;
+use PHPMailer\PHPMailer\Exception;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class frontendController extends Controller
 {
@@ -179,6 +183,11 @@ class frontendController extends Controller
     {
         $cartItems = Cart::where('is_wishlist', 'no')->get();
         $cs = Session::get('checkout_summary');
+
+        if (!$cs || !isset($cs['order_id'])) {
+            return redirect()->route('frontend.home')->with('error', 'Invalid session.');
+        }
+
         $orderId = $cs['order_id'];
         $order = Order::find($orderId);
 
@@ -203,12 +212,55 @@ class frontendController extends Controller
         $order->order_status = 'payment-success';
         $order->save();
 
-        Cart::where('is_wishlist', 'no')->delete();
+        // Note Creation
+        $note = new Note;
+        if (Session::has('customer_id')) {
+            $note->customer_id = Session::get('customer_id');
+        } else {
+            $note->guest_token = Session::get('guest_token');
+        }
+        $note->order_id = $orderId;
+        $note->related_to = 'Order Email Status';
 
+        // Email with PHPMailer
+        $mail = new PHPMailer(true);
+
+        try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host       = env('MAIL_HOST');
+            $mail->SMTPAuth   = true;
+            $mail->Username   = env('MAIL_USERNAME');
+            $mail->Password   = env('MAIL_PASSWORD');
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = env('MAIL_PORT');
+
+            // Recipients
+            $mail->setFrom(env('MAIL_USERNAME'), 'Your Website');
+            $mail->addAddress('admin@email.com', 'Admin');
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'New Order Payment Success - Order #' . $order->id;
+            $mail->Body    = 'A new order has been successfully paid. Order ID: <strong>' . $order->id . '</strong>';
+            $mail->AltBody = 'A new order has been successfully paid. Order ID: ' . $order->id;
+
+            $mail->send();
+
+            $note->note = "Email Sent successfully on " . Carbon::now()->format('d-m-Y, h:i A') . ".";
+        } catch (Exception $e) {
+            $note->note = "Email could not be sent. " . $mail->ErrorInfo;
+        }
+
+        $note->is_manual = false;
+        $note->save();
+
+        Cart::where('is_wishlist', 'no')->delete();
         Session::forget('checkout_summary');
 
         return view('frontend.thankyou', compact('orderId'));
     }
+
 
 
 

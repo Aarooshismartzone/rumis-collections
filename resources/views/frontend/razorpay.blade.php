@@ -16,9 +16,10 @@
                 "key": "{{ env('RAZORPAY_KEY') }}",
                 "amount": "{{ $summary['grand_total'] * 100 }}", // in paise
                 "currency": "INR",
-                "name": "{{ env('APP_NAME') }}",
+               // "name": "{{ env('APP_NAME') }}",
+                "name": "Rumi's Collections",
                 "description": "Order Payment",
-                "image": "{{ asset('images/logo/logo_white.png') }}", // Optional: add logo URL
+                "image": "{{ asset('images/logo/logo.png') }}", // Optional: add logo URL
                 "handler": function(response) {
                     // Submit the payment ID to backend
                     const form = document.createElement('form');

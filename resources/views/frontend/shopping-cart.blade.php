@@ -63,7 +63,7 @@
                 @endforeach
             </div>
             <div class="col-lg-4 col-md-3 col-12 ps-5">
-                <div class="py-2 px-4" style="background-color: rgb(212, 212, 212)">
+                <div class="py-2 px-4" style="background-color: rgb(231, 231, 231)">
                     <div class="cart-summary">
                         @include('frontend.cart._totals')
                     </div>

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('sku')->unique()->nullable()->comment('Unique Stock Keeping Unit for the product');
             $table->integer('views')->default(0)->comment('Number of times the product was viewed');
             $table->boolean('is_featured')->default(false)->comment('Indicates if the product is featured');
-            $table->integer('number_of_orders')->default(0)->comment('Number of items ordered');
+            $table->integer('number_of_orders')->default(0)->comment('Number of items ordered')->nullable();
             $table->timestamps();
 
             // Foreign key constraint

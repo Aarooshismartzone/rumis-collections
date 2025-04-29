@@ -29,6 +29,7 @@ Route::get('/product/add-to-wishist/{product_slug}', [cartController::class, 'ad
 Route::post('/cart/update', [cartController::class, 'updateCart'])->name('cart.update');
 Route::get('/shopping-cart', [frontendController::class, 'viewCart'])->name('frontend.shoppingcart');
 Route::get('/wishlist', [frontendController::class, 'viewWishlist'])->name('frontend.wishlist');
+Route::get('/product/move-to-cart/{id}', [cartController::class, 'moveToCart'])->name('frontend.moveToCart');
 Route::post('/cart/refresh-totals', [cartController::class, 'refreshCartTotals'])->name('cart.refreshTotals'); // Partial
 Route::get('/checkout', [frontendController::class, 'viewCheckoutPage'])->name('checkout');
 Route::post('/order/store', [orderController::class, 'addOrder'])->name('order.store');
