@@ -12,7 +12,8 @@
     color: black;
     border: 1px solid black;
     border-radius: 25px;
-    padding-right: 35px; /* Space for the icon */
+    padding-right: 35px;
+    /* Space for the icon */
 }
 
 .searchbox::placeholder {
@@ -39,4 +40,10 @@
 
 .search-icon:focus {
     outline: none;
+}
+
+@media (max-width: 991.98px) {
+    .navbar form {
+        margin-bottom: 10px;
+    }
 }

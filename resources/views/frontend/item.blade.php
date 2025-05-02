@@ -6,6 +6,14 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/navbar-black.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/frontend/productpage.css') }}">
     <title>{{ $product->product_name ?? 'Product Details' }}</title>
+    <style>
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.747);
+            padding: 5px
+        }
+    </style>
 </head>
 
 <body style="font-family: 'Poppins', serif">

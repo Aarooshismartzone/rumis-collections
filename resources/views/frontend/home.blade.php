@@ -28,7 +28,8 @@
                     @endforeach
                     <div class="text-center">
                         <div style="position: relative" class="mt-3">
-                            <a href="#" class="smr-btn">See More</a>
+                            <a href="{{ route('frontend.shop', ['category_slug' => $category->category_slug]) }}"
+                                class="smr-btn">See More</a>
                         </div>
                     </div>
                 </div>
