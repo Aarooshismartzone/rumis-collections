@@ -8,34 +8,38 @@
 </head>
 
 <body style="font-family: 'Poppins', serif">
-    @include('frontend.layouts.partials.navbar')
-    @include('frontend.layouts.partials.accordian')
+    <main>
+        @include('frontend.layouts.partials.navbar')
+        @include('frontend.layouts.partials.accordian')
 
-    {{-- Hero section --}}
-    <div style="position: relative">
-        <div class="container">
-            <div class="section-title pt-4">Featured Products</div>
-            <div class="row mt-2">
-                @foreach ($products->where('is_featured', true)->sortByDesc('created_at')->take(4) as $product)
-                    @include('frontend.layouts.partials.list')
-                @endforeach
-            </div>
-            @foreach ($categories as $category)
-                <div class="section-title pt-4">{{ $category->category_name }}</div>
+        {{-- Hero section --}}
+        <div style="position: relative">
+            <div class="container">
+                <div class="section-title pt-4">Featured Products</div>
                 <div class="row mt-2">
-                    @foreach ($category->products->sortByDesc('created_at')->take(4) as $product)
+                    @foreach ($products->where('is_featured', true)->sortByDesc('created_at')->take(4) as $product)
                         @include('frontend.layouts.partials.list')
                     @endforeach
-                    <div class="text-center">
-                        <div style="position: relative" class="mt-3">
-                            <a href="{{ route('frontend.shop', ['category_slug' => $category->category_slug]) }}"
-                                class="smr-btn">See More</a>
+                </div>
+                @foreach ($categories as $category)
+                    <div class="section-title pt-4">{{ $category->category_name }}</div>
+                    <div class="row mt-2">
+                        @foreach ($category->products->sortByDesc('created_at')->take(4) as $product)
+                            @include('frontend.layouts.partials.list')
+                        @endforeach
+                        <div class="text-center">
+                            <div style="position: relative" class="mt-3">
+                                <a href="{{ route('frontend.shop', ['category_slug' => $category->category_slug]) }}"
+                                    class="smr-btn">See More</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
-    </div>
+    </main>
+
+    @include('frontend.layouts.partials.footer')
 </body>
 
 </html>

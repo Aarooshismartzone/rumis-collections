@@ -20,25 +20,33 @@
 </head>
 
 <body style="font-family: 'Poppins', serif">
-    @include('frontend.layouts.partials.navbar-black')
+    <main>
+        @include('frontend.layouts.partials.navbar-black')
 
-    <div class="container">
-        <div class="section-title pt-4">
-            Shop for {{ isset($category) ? $category->category_name : 'products' }}
-        </div>
-        <div class="row mt-2" id="product-list">
-            @foreach ($products as $product)
-                @include('frontend.layouts.partials.list')
-            @endforeach
-        </div>
+        <div class="container">
+            <div class="section-title pt-4">
+                @if (isset($query))
+                    Search Results for: <strong>{{ $query }}</strong>
+                @else
+                    Shop for {{ isset($category) ? $category->category_name : 'products' }}
+                @endif
+            </div>
+            <div class="row mt-2" id="product-list">
+                @foreach ($products as $product)
+                    @include('frontend.layouts.partials.list')
+                @endforeach
+            </div>
 
-        <div class="see-more-btn">
-            @if ($products->hasMorePages())
-                <button id="loadMore" class="btn btn-primary" data-next-page="{{ $products->nextPageUrl() }}">See
-                    More</button>
-            @endif
+            <div class="see-more-btn">
+                @if ($products->hasMorePages())
+                    <button id="loadMore" class="btn btn-primary" data-next-page="{{ $products->nextPageUrl() }}">See
+                        More</button>
+                @endif
+            </div>
         </div>
-    </div>
+    </main>
+
+    @include('frontend.layouts.partials.footer')
 
     <script>
         $(document).on('click', '#loadMore', function() {

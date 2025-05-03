@@ -11,22 +11,31 @@ use Illuminate\Support\Str;
 
 class cartController extends Controller
 {
-    public function addToCart($product_slug)
+    public function addToCart($product_slug, $product_size = null)
     {
-        // Find product by slug
         $product = Product::where('product_slug', $product_slug)->first();
 
-        // If product doesn't exist, return back with an error message
         if (!$product) {
             return redirect()->back()->with('error', 'Product not found.');
         }
 
-        // Check if the user is logged in
+        // Check if product_size is required
+        if ($product->category && $product->category->is_productsize) {
+            if (!$product_size) {
+                return redirect()->back()->with('error', 'Please select a size.');
+            }
+
+            $available_sizes = array_map('trim', explode(',', $product->product_size));
+            if (!in_array($product_size, $available_sizes)) {
+                return redirect()->back()->with('error', 'Invalid size selected.');
+            }
+        }
+
+        // Session logic
         if (Session::has('customer_id')) {
             $customer_id = Session::get('customer_id');
             $guest_token = null;
         } else {
-            // If guest, check if guest_token exists, otherwise generate one
             if (!Session::has('guest_token')) {
                 Session::put('guest_token', Str::random(32));
             }
@@ -34,28 +43,29 @@ class cartController extends Controller
             $guest_token = Session::get('guest_token');
         }
 
-        // Check if the product is already in the cart
+        // Check if item with same size is in cart
         $cartItem = Cart::where('product_id', $product->id)
+            ->when($product_size, function ($query) use ($product_size) {
+                $query->where('product_size', $product_size);
+            })
             ->where(function ($query) use ($customer_id, $guest_token) {
                 if ($customer_id) {
                     $query->where('customer_id', $customer_id);
                 } else {
                     $query->where('guest_token', $guest_token);
                 }
-            })
-            ->first();
+            })->first();
 
         if ($cartItem) {
-            // If exists, update quantity
             $cartItem->increment('quantity');
         } else {
-            // Add new item to cart
             Cart::create([
                 'customer_id' => $customer_id,
                 'guest_token' => $guest_token,
                 'product_id' => $product->id,
+                'product_size' => $product_size,
                 'quantity' => 1,
-                'is_wishlist' => 0, // Default to cart, not wishlist
+                'is_wishlist' => 0,
             ]);
         }
 

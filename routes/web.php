@@ -23,8 +23,9 @@ use Illuminate\Support\Facades\Route;
 //FRONTEND
 Route::get('/', [frontendController::class, 'home'])->name('frontend.home');
 Route::get('/shop/{category_slug?}', [frontendController::class, 'shop'])->name('frontend.shop');
+Route::get('/search', [FrontendController::class, 'search'])->name('frontend.search');
 Route::get('/product/{product_slug}', [frontendController::class, 'viewProduct'])->name('frontend.viewproduct');
-Route::get('/product/add-to-cart/{product_slug}', [cartController::class, 'addToCart'])->name('frontend.addtocart');
+Route::get('/product/add-to-cart/{product_slug}/{product_size?}', [cartController::class, 'addToCart'])->name('frontend.addtocart');
 Route::get('/product/add-to-wishist/{product_slug}', [cartController::class, 'addToWishlist'])->name('frontend.addtowishlist');
 Route::post('/cart/update', [cartController::class, 'updateCart'])->name('cart.update');
 Route::get('/shopping-cart', [frontendController::class, 'viewCart'])->name('frontend.shoppingcart');

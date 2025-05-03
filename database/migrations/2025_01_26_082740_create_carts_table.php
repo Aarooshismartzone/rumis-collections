@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id')->nullable(); // For logged-in users
             $table->string('guest_token', 64)->nullable(); // For guest users
             $table->unsignedBigInteger('product_id'); // Associated product
+            $table->string('product_size')->nullable();
             $table->integer('quantity')->default(1); // Quantity of the product
             $table->boolean('is_wishlist')->default(false); // To distinguish cart items from wishlist items
             $table->timestamps();

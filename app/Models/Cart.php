@@ -23,6 +23,7 @@ class Cart extends Model
         'customer_id',
         'guest_token',
         'product_id',
+        'product_size',
         'quantity',
         'is_wishlist',
     ];

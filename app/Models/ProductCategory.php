@@ -24,6 +24,7 @@ class ProductCategory extends Model
         'parent_category',
         'category_name',
         'category_slug',
+        'is_productsize',
     ];
 
     /**

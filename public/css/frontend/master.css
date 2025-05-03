@@ -1,3 +1,19 @@
+/* Page */
+
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+  }
+
 /* Navbar */
 
 .navbar-transparent {
@@ -7,6 +23,27 @@
 .navbar-logo {
     width: 150px;
     height: auto;
+}
+
+.icons-m-view {
+    display: none;
+}
+
+.icons-d-view {
+    display: flex;
+}
+
+.navbar-toggler {
+    border: none !important;
+    box-shadow: none !important; /* Removes focus outline shadow */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 /* accordion */
@@ -86,10 +123,11 @@
     text-decoration: none;
     position: relative;
     display: inline-block;
-    padding-bottom: 5px; /* Adds space for the underline */
+    padding-bottom: 5px;
+    /* Adds space for the underline */
 }
 
-.smr-btn:hover{
+.smr-btn:hover {
     color: black;
 }
 
@@ -97,10 +135,13 @@
     content: "";
     position: absolute;
     left: 0;
-    bottom: -3px; /* Places the line slightly below the text */
+    bottom: -3px;
+    /* Places the line slightly below the text */
     width: 0;
-    height: 3px; /* Thickness of the underline */
-    background-color: black; /* Color of the underline */
+    height: 3px;
+    /* Thickness of the underline */
+    background-color: black;
+    /* Color of the underline */
     transition: width 0.3s ease-in-out;
 }
 
@@ -108,8 +149,30 @@
     width: 100%;
 }
 
+@media screen and (max-width: 992px) {
+    .navbar-logo {
+        width: 120px;
+    }
+
+    .icons-m-view {
+        display: flex;
+    }
+
+    .icons-d-view {
+        display: none;
+    }
+
+    .section-title{
+        font-size: 28px;
+    }
+}
+
 
 @media screen and (max-width: 600px) {
+    .navbar-logo {
+        width: 100px;
+    }
+
     .accordion-overlay {
         padding-top: 120px;
         padding-bottom: 50px;
@@ -117,5 +180,15 @@
 
     .main-title {
         font-size: 35px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .navbar-logo {
+        width: 80px;
+    }
+
+    .section-title{
+        font-size: 20px;
     }
 }

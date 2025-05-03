@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title>Receipt - Order #{{ $order->id }}</title>
     <style>
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -93,7 +92,8 @@
             @foreach ($orderItems as $index => $item)
                 <tr style="background-color: rgb(219, 255, 250)">
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->product->product_name ?? 'N/A' }}</td>
+                    <td>{{ $item->product->product_name ?? 'N/A' }}<br><b>Size: {{ $item->product_size }}</b>
+                    </td>
                     <td>{{ $item->quantity }}</td>
                     <td>INR {{ $item->product->discounted_price }}</td>
                     <td>INR {{ $item->quantity * $item->product->discounted_price }}

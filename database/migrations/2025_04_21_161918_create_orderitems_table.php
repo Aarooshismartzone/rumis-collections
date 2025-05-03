@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id'); // Associated order
             $table->unsignedBigInteger('product_id'); // Associated product
+            $table->string('product_size')->nullable();
             $table->integer('quantity');
             $table->timestamps();
 

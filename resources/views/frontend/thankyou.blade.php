@@ -40,7 +40,6 @@
 </head>
 
 <body>
-    @include('frontend.layouts.partials.navbar')
 
     <div class="thankyou-container">
         <h1>Thank You for Your Purchase!</h1>

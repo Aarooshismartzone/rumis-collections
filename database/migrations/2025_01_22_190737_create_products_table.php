@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('ai_4')->comment('Additional image 4');
             $table->string('ai_5')->comment('Additional image 5');
             $table->string('ai_6')->comment('Additional image 6');
+            $table->text('product_size')->nullable();
             $table->decimal('actual_price', 10, 2)->comment('Original price of the product');
             $table->decimal('discounted_price', 10, 2)->nullable()->comment('Discounted price of the product');
             $table->boolean('sale')->default(false)->comment('Indicates if the product is on sale');

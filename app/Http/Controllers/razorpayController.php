@@ -96,6 +96,7 @@ class razorpayController extends Controller
                     Orderitem::create([
                         'order_id' => $order->id,
                         'product_id' => $item->product_id,
+                        'product_size' => $item->product_size,
                         'quantity' => $item->quantity,
                     ]);
                 }

@@ -43,6 +43,7 @@
                         <div class="col-md-3 col-12">
                             <img src="{{ asset('storage/' . $cart->product->image) }}" width="150" height="auto">
                             <p>{{ $cart->product->product_name }}</p>
+                            <p style="color: green; font-weight:bold">Size: {{$cart->product_size}}</p>
                         </div>
                         <div class="col-md-3 col-sm-4 col-6 text-center">
                             <button class="btn btn-sm btn-outline-dark update-quantity"

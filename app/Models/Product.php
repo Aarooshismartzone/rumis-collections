@@ -21,6 +21,7 @@ class Product extends Model
         'ai_4',
         'ai_5',
         'ai_6',
+        'product_size',
         'actual_price',
         'discounted_price',
         'sale',

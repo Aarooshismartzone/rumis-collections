@@ -73,6 +73,26 @@ class frontendController extends Controller
         return view('frontend.item', compact('product', 'productinfos'));
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $products = Product::where('product_name', 'like', "%$query%")
+            ->orWhere('description', 'like', "%$query%")
+            ->orWhereHas('category', function ($q) use ($query) {
+                $q->where('category_name', 'like', "%$query%");
+            })
+            ->orWhereHas('tags', function ($q) use ($query) {
+                $q->where('name', 'like', "%$query%");
+            })
+            ->orWhereHas('productInfos', function ($q) use ($query) {
+                $q->where('value', 'like', "%$query%");
+            })
+            ->paginate(12);
+
+        return view('frontend.shop', compact('products', 'query'));
+    }
+
     public function viewCart()
     {
         if (Session::has('customer_id')) {
