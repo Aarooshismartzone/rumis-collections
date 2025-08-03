@@ -60,7 +60,8 @@ Route::prefix('customer')->name('customer.')->group(function () {
     Route::middleware(CustomerAuth::class)->group(function () {
         Route::get('dashboard', [CustomerDashboardController::class, 'dashboard'])->name('dashboard');
         Route::get('orders', [CustomerDashboardController::class, 'viewOrders'])->name('orders');
-        Route::get('orders/{id}', [CustomerDashboardController::class, 'viewOrderDetails'])->name('order.items');
+        Route::get('orders/{id}', [CustomerDashboardController::class, 'viewOrderItems'])->name('order.items');
+        Route::get('profile', [CustomerDashboardController::class, 'viewProfile'])->name('profile');
     });
 
     // Password Reset Routes

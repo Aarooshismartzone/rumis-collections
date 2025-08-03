@@ -76,7 +76,7 @@ class customerAuthController extends Controller
             Session::put('customer_name', $customer->full_name);
             Session::put('customer_email', $customer->email);
 
-            return redirect()->back();
+            return redirect()->route('frontend.home');
         }
 
         return back()->with('error', 'Invalid credentials.');

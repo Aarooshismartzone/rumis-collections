@@ -60,12 +60,14 @@
                     <a class="nav-link text-white" href="#">Contact</a>
                 </li>
             </ul>
-            <form class="d-flex align-items-center position-relative me-3" role="search" method="GET" action="{{ route('frontend.search') }}">
-                <input name="query" class="form-control me-2 searchbox" type="search" placeholder="Search" aria-label="Search">
+            <form class="d-flex align-items-center position-relative me-3" role="search" method="GET"
+                action="{{ route('frontend.search') }}">
+                <input name="query" class="form-control me-2 searchbox" type="search" placeholder="Search"
+                    aria-label="Search">
                 <button class="btn search-icon" style="margin-left: -10px; margin-right: 10px;" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
-            </form>            
+            </form>
             <div class="align-items-center icons-d-view" style="font-size: 14px">
                 <a href="{{ route('frontend.shoppingcart') }}" class="text-white me-3 position-relative">
                     <i class="fas fa-shopping-cart"></i>
@@ -83,9 +85,32 @@
                         </span>
                     @endif
                 </a>
-                <a href="{{ route('customer.login') }}" target="_blank" class="text-white">
-                    <i class="fas fa-user"></i>
-                </a>
+                @php
+                    $isLoggedIn = Session::has('customer_id');
+                    $fname = Session::get('fname');
+                @endphp
+
+                <div class="dropdown">
+                    <a href="{{ $isLoggedIn ? '#' : route('customer.login') }}"
+                        class="text-white dropdown-toggle d-flex align-items-center" id="customerDropdown"
+                        @if ($isLoggedIn) data-bs-toggle="dropdown" aria-expanded="false" @endif>
+                        <i class="fas fa-user"></i>
+                    </a>
+
+                    @if ($isLoggedIn)
+                        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="customerDropdown">
+                            <li class="dropdown-header">Hi, {{ $fname }}</li>
+                            <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}" target="_blank">Account</a></li>
+                            <li><a class="dropdown-item" href="{{ route('customer.orders') }}" target="_blank">Orders</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="{{ route('customer.logout') }}">Logout</a>
+                            </li>
+                        </ul>
+                    @endif
+                </div>
+
             </div>
         </div>
     </div>

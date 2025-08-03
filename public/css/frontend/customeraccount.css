@@ -94,6 +94,7 @@
 
 .user-info div {
     font-weight: bold;
+    min-width: 200px
 }
 
 /* Full button for larger screens */
@@ -134,8 +135,9 @@
         justify-content: space-between;
     }
 
-    .user-info span {
-        font-size: 14px;
+    .user-info div {
+        font-size: 11px;
+        min-width: 100px;
     }
 
     /* Hide text in logout button on small screens */

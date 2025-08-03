@@ -18,7 +18,7 @@
                 <div class="user-info">
                     <div>{{ session('customer_name') }}</div>
                     <a href="{{ route('customer.logout') }}" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i>
                     </a>
                 </div>
             </nav>

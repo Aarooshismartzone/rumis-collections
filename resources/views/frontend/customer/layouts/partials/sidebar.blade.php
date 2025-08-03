@@ -3,20 +3,20 @@
         <i class="fas fa-angle-right"></i>
     </div>
 
-    <a href="/graahak/dashboard" class="nav-link mt-5" role="tab">
+    <a href="{{ route('customer.dashboard') }}" class="nav-link mt-5" role="tab">
         <i class="fas fa-tachometer-alt"></i> <span class="link-text">Dashboard</span>
     </a>
 
-    <a href="/graahak/addresses" class="nav-link" role="tab">
-        <i class="fas fa-shopping-cart"></i> <span class="link-text">Addresses</span>
+    <a href="{{ route('customer.orders') }}" class="nav-link" role="tab">
+        <i class="fa-solid fa-cart-arrow-down"></i> <span class="link-text">Orders</span>
     </a>
 
     <a href="{{ route('customer.orders') }}" class="nav-link" role="tab">
-        <i class="fas fa-users"></i> <span class="link-text">Orders</span>
+        <i class="fa-solid fa-address-book"></i> <span class="link-text">Addresses</span>
     </a>
 
-    <a href="/graahak/profile" class="nav-link" role="tab">
-        <i class="fas fa-cog"></i> <span class="link-text">Profile</span>
+    <a href="{{ route('customer.profile') }}" class="nav-link" role="tab">
+        <i class="fas fa-user"></i> <span class="link-text">Profile</span>
     </a>
 </div>
 

@@ -22,9 +22,9 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $order->id }}</td>
-                    <td>{{ $order->created_at }}</td>
-                    <td>{{ $order->total_price }}</td>
-                    <td>{{ $order->status }}</td>
+                    <td>{{ $order->created_at->format('F j, Y') }}</td>
+                    <td>₹{{ $order->grand_total }}</td>
+                    <td>{{ $order->order_status }}</td>
                     <td><a href="{{ route('customer.order.items', $order->id) }}">See Items</a></td>
                 </tr>
             @endforeach
