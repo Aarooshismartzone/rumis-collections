@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\customerPasswordResetController;
 use App\Http\Controllers\cartController;
 use App\Http\Controllers\checkoutController;
 use App\Http\Controllers\customerAuthController;
+use App\Http\Controllers\customerDashboardController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\frontendController;
 use App\Http\Controllers\orderController;
@@ -46,14 +48,29 @@ Route::get('/payment/success', [frontendController::class, 'paymentSuccess'])->n
 //pdf
 Route::get('/download-receipt/{oid}', [pdfController::class, 'downloadReceipt'])->name('receipt.download');
 
-//Customer Login
-Route::get('/customer/login', [customerAuthController::class, 'showLoginForm'])->name('customer.login');
-Route::post('/customer/login', [customerAuthController::class, 'login'])->name('customer.login.submit');
-Route::get('/customer/logout', [customerAuthController::class, 'logout'])->name('customer.logout');
-// Apply middleware directly
-Route::get('/customer/dashboard', [CustomerAuthController::class, 'dashboard'])
-    ->middleware(CustomerAuth::class)
-    ->name('customer.dashboard');
+Route::prefix('customer')->name('customer.')->group(function () {
+
+    // Customer Authentication
+    Route::post('register', [CustomerAuthController::class, 'register'])->name('register.submit');
+    Route::get('login', [CustomerAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [CustomerAuthController::class, 'login'])->name('login.submit');
+    Route::get('logout', [CustomerAuthController::class, 'logout'])->name('logout');
+
+    // Customer Dashboard (Protected by middleware)
+    Route::middleware(CustomerAuth::class)->group(function () {
+        Route::get('dashboard', [CustomerDashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('orders', [CustomerDashboardController::class, 'viewOrders'])->name('orders');
+        Route::get('orders/{id}', [CustomerDashboardController::class, 'viewOrderDetails'])->name('order.items');
+    });
+
+    // Password Reset Routes
+    Route::get('forgot-password', [CustomerPasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('forgot-password', [CustomerPasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('reset-password/{token}', [CustomerPasswordResetController::class, 'showResetForm'])->name('password.reset');
+    Route::post('reset-password', [CustomerPasswordResetController::class, 'reset'])->name('password.update');
+});
+
+//BACKEND
 
 // Login Route
 Route::get('/internal/login', [userController::class, 'showLoginForm'])->name('admin.login');

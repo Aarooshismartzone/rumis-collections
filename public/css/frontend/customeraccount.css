@@ -1,0 +1,169 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 60px;
+    background-color: #343a40;
+    transition: width 0.3s ease;
+    z-index: 2;
+    color: white;
+}
+
+.sidebar.expanded {
+    width: 300px;
+}
+
+.sidebar .nav-link {
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link i {
+    font-size: 1.2rem;
+}
+
+.sidebar .link-text {
+    display: none;
+    margin-left: 10px;
+}
+
+.sidebar.expanded .link-text {
+    display: inline;
+    font-size: 1rem;
+}
+
+.sidebar-toggle {
+    cursor: pointer;
+    position: absolute;
+    right: -20px;
+    top: 10px;
+    background-color: black;
+    border-radius: 55px;
+    font-size: 12px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: bold;
+    color: white;
+    z-index: 20;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border: 2px solid white;
+    /* Optional for better visibility */
+}
+
+.sidebar.expanded .sidebar-toggle i {
+    transform: rotate(180deg);
+}
+
+.overlay.show {
+    display: block;
+}
+
+.content-area {
+    width: 100%;
+    padding: 15px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #444;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.topbar h1 {
+    font-size: 22px;
+    margin: 0;
+    flex: 1 1 100%;
+    margin-bottom: 10px;
+}
+
+.user-info {
+    display: flex;
+    gap: 10px;
+}
+
+.user-info div {
+    font-weight: bold;
+}
+
+/* Full button for larger screens */
+.logout-btn {
+    color: #fff;
+    text-decoration: none;
+    background: #d9534f;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* in-built class for datatables */
+.dt-search {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+/* Responsive behavior for smaller screens */
+@media (max-width: 576px) {
+    .topbar {
+        padding: 10px 15px;
+        border-radius: 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .topbar h1 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .user-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .user-info span {
+        font-size: 14px;
+    }
+
+    /* Hide text in logout button on small screens */
+    .logout-btn {
+        padding: 8px;
+        background: transparent;
+        color: #fff;
+    }
+
+    .logout-btn i {
+        font-size: 18px;
+        background: #d9534f;
+        padding: 8px;
+        border-radius: 50%;
+        transition: background 0.3s;
+    }
+
+    .logout-btn:hover i {
+        background: #c9302c;
+    }
+
+    .logout-btn::after {
+        content: '';
+    }
+}
+
+@media (max-width: 400px) {
+    .logout-text {
+        display: none;
+    }
+}

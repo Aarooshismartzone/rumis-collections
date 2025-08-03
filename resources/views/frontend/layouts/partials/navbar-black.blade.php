@@ -21,7 +21,7 @@
                         </span>
                     @endif
                 </a>
-                <a href="#" style="color: black">
+                <a href="{{ route('customer.login') }}" target="_blank" style="color: black">
                     <i class="fas fa-user"></i>
                 </a>
             </div>
@@ -83,7 +83,7 @@
                         </span>
                     @endif
                 </a>
-                <a href="#" style="color: black">
+                <a href="{{ route('customer.login') }}" style="color: black">
                     <i class="fas fa-user"></i>
                 </a>
             </div>

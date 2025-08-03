@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Customer extends Authenticatable
+class Customer extends Authenticatable implements CanResetPassword
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, CanResetPasswordTrait;
 
     protected $table = 'customers';
 
@@ -21,12 +23,6 @@ class Customer extends Authenticatable
         'email',
         'pnum',
         'password',
-        'address_line_1',
-        'address_line_2',
-        'city',
-        'state',
-        'country',
-        'pin_code',
         'company_name',
         'profile_image',
         'email_verified_at',
@@ -40,9 +36,15 @@ class Customer extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    // ⚠️ Remove the automatic bcrypt to avoid double hashing on reset
     public function setPasswordAttribute($value)
     {
-        $this->attributes['password'] = bcrypt($value);
+        // Only hash if not already hashed
+        if (\Illuminate\Support\Str::startsWith($value, '$2y$') === false) {
+            $this->attributes['password'] = bcrypt($value);
+        } else {
+            $this->attributes['password'] = $value;
+        }
     }
 
     public function getFullNameAttribute()

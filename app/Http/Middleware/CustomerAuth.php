@@ -14,11 +14,11 @@ class CustomerAuth
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    // public function handle(Request $request, Closure $next): Response
-    // {
-    //     if (!Session::has('customer_id')) {
-    //         return redirect()->route('customer.login')->with('error', 'Access denied. Please login.');
-    //     }
-    //     return $next($request);
-    // }
+    public function handle(Request $request, Closure $next): Response
+    {
+        if (!Session::has('customer_id')) {
+            return redirect()->route('customer.login')->with('error', 'Access denied. Please login.');
+        }
+        return $next($request);
+    }
 }

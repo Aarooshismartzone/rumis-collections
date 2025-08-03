@@ -11,7 +11,48 @@ class customerAuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('customer.auth.customer-login');
+        return view('frontend.customer.customer-login');
+    }
+
+    public function register(Request $request)
+    {
+        // Validate form input
+        $request->validate([
+            'fname' => 'required|string|max:255|regex:/^[A-Za-z\s]+$/',
+            'lname' => 'nullable|string|max:255|regex:/^[A-Za-z\s]+$/',
+            'email' => 'required|email|unique:customers,email',
+            'pnum' => 'required|numeric|digits_between:7,15|unique:customers,pnum',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        // Handle first and last name
+        $fname = $request->input('fname'); // First Name
+        $lname = $request->input('lname'); // Last Name (can be null)
+
+        // Generate unique username
+        $baseUsername = strtolower(substr(preg_replace('/[^a-zA-Z]/', '', $fname), 0, 4));
+        do {
+            $username = $baseUsername . rand(1000, 9999);
+        } while (Customer::where('username', $username)->exists());
+
+        // Create new customer
+        $customer = Customer::create([
+            'fname' => $fname,
+            'lname' => $lname,
+            'username' => $username,
+            'email' => $request->email,
+            'pnum' => $request->pnum,
+            'password' => Hash::make($request->password),
+            'company_name' => null,
+            'profile_image' => null,
+            'email_verified_at' => null,
+            'is_active' => true,
+        ]);
+
+        // Auto-login (optional)
+        auth('customer')->login($customer);
+
+        // Redirect to customer dashboard or wherever
+        return redirect()->route('customer.dashboard')->with('success', 'Registration successful. Welcome!');
     }
 
     public function login(Request $request)
@@ -30,22 +71,15 @@ class customerAuthController extends Controller
 
             // Store customer session
             Session::put('customer_id', $customer->id);
-            Session::put('customer_name', $customer->getFullNameAttribute());
+            Session::put('customer_fname', $customer->fname);
+            Session::put('customer_lname', $customer->lname);
+            Session::put('customer_name', $customer->full_name);
             Session::put('customer_email', $customer->email);
 
-            return redirect()->route('frontend.dashboard');
+            return redirect()->back();
         }
 
         return back()->with('error', 'Invalid credentials.');
-    }
-
-    public function dashboard()
-    {
-        if (!Session::has('customer_id')) {
-            return redirect()->route('customer.login')->with('error', 'Please login first.');
-        }
-
-        return view('frontend.dashboard');
     }
 
     public function logout()
