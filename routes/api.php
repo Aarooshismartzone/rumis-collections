@@ -12,7 +12,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/generate-guest-token', [customerAuthController::class, 'generateGuestToken']);
 
 // Require token (auth or guest) for all product-related APIs
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('guestOrAuth')->group(function () {
     Route::get('/categories', [productController::class, 'getCategories']);
     Route::get('/products', [ProductController::class, 'getProducts']);
     Route::get('/products/{id}', [ProductController::class, 'getProductById']);

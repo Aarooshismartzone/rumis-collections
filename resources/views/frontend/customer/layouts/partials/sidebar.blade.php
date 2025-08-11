@@ -11,7 +11,7 @@
         <i class="fa-solid fa-cart-arrow-down"></i> <span class="link-text">Orders</span>
     </a>
 
-    <a href="{{ route('customer.orders') }}" class="nav-link" role="tab">
+    <a href="{{ route('customer.addresses') }}" class="nav-link" role="tab">
         <i class="fa-solid fa-address-book"></i> <span class="link-text">Addresses</span>
     </a>
 

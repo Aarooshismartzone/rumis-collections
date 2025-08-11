@@ -55,7 +55,3 @@ class productController extends Controller
         ], 200);
     }
 }
-
-
-
-// I will be creating the android app right now. It will be done using Java and XML. The launching page shall show the logo, which will be there for 3 seconds. The token should be generated in the meantime. Also, I need to store the login creds in the SQLIte database so that if the user had already logged in once, they need not log in again.

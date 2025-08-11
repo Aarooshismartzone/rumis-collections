@@ -137,6 +137,9 @@ class frontendController extends Controller
         if (Session::has('customer_id')) {
             $customer_id = Session::get('customer_id');
             $guest_token = null;
+
+            // Fetch saved addresses for this customer
+            $addresses = \App\Models\Customeraddress::where('customer_id', $customer_id)->get();
         } else {
             // If guest, check if guest_token exists, otherwise generate one
             if (!Session::has('guest_token')) {
@@ -144,6 +147,9 @@ class frontendController extends Controller
             }
             $customer_id = null;
             $guest_token = Session::get('guest_token');
+
+            // No saved addresses for guests
+            $addresses = collect();
         }
 
         // Fetch cart items based on customer_id or guest_token
@@ -184,7 +190,9 @@ class frontendController extends Controller
             'deliveryCharge',
             'gstAmount',
             'grandTotal',
-            'generics'
+            'generics',
+            'customer_id',
+            'addresses'
         ));
     }
 

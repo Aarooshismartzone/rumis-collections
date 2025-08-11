@@ -20,7 +20,7 @@
     <title>Checkout</title>
 </head>
 
-<body>
+<body style="background-color: rgb(214, 214, 214)">
     @include('frontend.layouts.partials.navbar-black')
 
     <div class="container my-5">
@@ -40,8 +40,18 @@
             @endphp
 
             <div class="row mt-5">
+                {{-- Delivery Address --}}
                 <div class="col-md-6">
                     <h5>Delivery Address</h5>
+                    @if ($customer_id)
+                        <button type="button" class="btn btn-link p-0 mb-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#savedAddressesModal"
+                            data-target-form="delivery">
+                            Choose from Saved Addresses
+                        </button>
+                    @endif
+
                     <div class="mb-2">
                         <label class="form-label">First Name</label>
                         <input name="delivery[fname]" type="text" class="form-control"
@@ -99,6 +109,7 @@
                     </div>
                 </div>
 
+                {{-- Billing Address --}}
                 <div class="col-md-6">
                     <h5 class="d-flex justify-content-between align-items-center">
                         Billing Address
@@ -108,6 +119,15 @@
                             <label class="form-check-label" for="sameAsDelivery">Same as delivery address</label>
                         </div>
                     </h5>
+                    @if ($customer_id)
+                        <button type="button" class="btn btn-link p-0 mb-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#savedAddressesModal"
+                            data-target-form="billing">
+                            Choose from Saved Addresses
+                        </button>
+                    @endif
+
                     <div class="mb-2">
                         <label class="form-label">First Name</label>
                         <input name="billing[fname]" type="text" class="form-control billing" required>
@@ -166,9 +186,55 @@
             </div>
         </form>
     </div>
+
+    {{-- Saved Addresses Modal --}}
+    @if ($customer_id)
+        <div class="modal fade" id="savedAddressesModal" tabindex="-1" aria-labelledby="savedAddressesModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="savedAddressesModalLabel">Saved Addresses</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @if ($addresses->isEmpty())
+                            <p>No saved addresses found.</p>
+                        @else
+                            <div class="row g-3">
+                                @foreach ($addresses as $address)
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="border rounded p-3 h-100">
+                                            <p class="mb-1"><strong>{{ $address->address_line_1 }}</strong></p>
+                                            <p class="mb-1">{{ $address->address_line_2 }}</p>
+                                            <p class="mb-1">{{ $address->city }}, {{ $address->state }}</p>
+                                            <p class="mb-1">{{ $address->country }} - {{ $address->pin_code }}</p>
+                                            @if ($address->is_primary_address)
+                                                <span class="badge bg-primary">Primary</span>
+                                            @endif
+                                            <div class="mt-2">
+                                                {{-- Use single quotes around JSON - @json safely encodes --}}
+                                                <button type="button" class="btn btn-sm btn-success select-address"
+                                                    data-address='@json($address)'>
+                                                    Use This Address
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @include('frontend.layouts.partials.footer')
 
     <script>
+        // ---------- helper: pincode lookup ----------
         function handlePincodeLookup(pincodeInputId, citySelectId, stateInputId) {
             const pincode = document.getElementById(pincodeInputId).value;
 
@@ -187,14 +253,14 @@
                             const uniqueCities = new Set();
 
                             result.PostOffice.forEach(office => {
-                                const city = office.Name + ', ' + office.District;
+                                const city = office.Name + ', ' + office.Block + ', ' + office.District;
                                 uniqueCities.add(city);
                             });
 
                             uniqueCities.forEach(city => {
                                 const opt = document.createElement('option');
                                 opt.value = city;
-                                opt.text = city;
+                                opt.textContent = city;
                                 citySelect.appendChild(opt);
                             });
 
@@ -211,29 +277,142 @@
             }
         }
 
-        document.getElementById('delivery_pincode').addEventListener('blur', function() {
-            handlePincodeLookup('delivery_pincode', 'delivery_city', 'delivery_state');
-        });
+        // ---------- main DOM ready ----------
+        document.addEventListener('DOMContentLoaded', function () {
+            // set up pincode listeners
+            const deliveryP = document.getElementById('delivery_pincode');
+            const billingP = document.getElementById('billing_pincode');
+            if (deliveryP) deliveryP.addEventListener('blur', function () {
+                handlePincodeLookup('delivery_pincode', 'delivery_city', 'delivery_state');
+            });
+            if (billingP) billingP.addEventListener('blur', function () {
+                handlePincodeLookup('billing_pincode', 'billing_city', 'billing_state');
+            });
 
-        document.getElementById('billing_pincode').addEventListener('blur', function() {
-            handlePincodeLookup('billing_pincode', 'billing_city', 'billing_state');
-        });
-
-        // When checkbox "same as delivery" is selected, copy delivery city/state
-        $('#sameAsDelivery').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('.billing').each(function() {
-                    let name = $(this).attr('name');
-                    let corresponding = name.replace('billing', 'delivery');
-                    let value = $('[name="' + corresponding + '"]').val();
-                    $(this).val(value).addClass('readonly').attr('readonly', true);
+            // track which form (delivery / billing) opened the modal
+            let currentTargetForm = 'delivery';
+            document.querySelectorAll('[data-target-form]').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const t = this.getAttribute('data-target-form');
+                    if (t === 'delivery' || t === 'billing') currentTargetForm = t;
                 });
+            });
 
-                $('#billing_city').html($('#delivery_city').html());
-                $('#billing_city').val($('#delivery_city').val());
-            } else {
-                $('.billing').val('').removeClass('readonly').attr('readonly', false);
-                $('#billing_city').html('<option value="">-- Select City --</option>');
+            // helper to create/replace city option safely
+            function setCitySelect(prefix, cityValue) {
+                const sel = document.querySelector(`[name="${prefix}[city]"]`);
+                if (!sel) return;
+                sel.innerHTML = ''; // clear
+                const opt = document.createElement('option');
+                opt.value = cityValue ?? '';
+                opt.textContent = cityValue ?? '';
+                opt.selected = true;
+                sel.appendChild(opt);
+            }
+
+            // fill address form safely
+            function fillAddressForm(prefix, address) {
+                if (!address || typeof address !== 'object') return;
+
+                const setIf = (selectorName, val) => {
+                    const el = document.querySelector(`[name="${prefix}[${selectorName}]"]`);
+                    if (!el) return;
+                    el.value = val ?? '';
+                };
+
+                setIf('address_line_1', address.address_line_1);
+                setIf('address_line_2', address.address_line_2);
+                setCitySelect(prefix, address.city);
+                setIf('state', address.state);
+                setIf('country', address.country);
+                setIf('pin_code', address.pin_code);
+                setIf('fname', address.fname ?? '');
+                setIf('lname', address.lname ?? '');
+                setIf('company_name', address.company_name ?? '');
+                setIf('pnum', address.pnum ?? '');
+            }
+
+            // bind "Use This Address" buttons
+            document.querySelectorAll('.select-address').forEach(button => {
+                button.addEventListener('click', function () {
+                    const raw = this.getAttribute('data-address');
+
+                    let addressObj = null;
+                    try {
+                        addressObj = JSON.parse(raw);
+                    } catch (err) {
+                        console.error('Address JSON parse error:', err, 'raw:', raw);
+                        alert('Failed to parse saved address. See console for details.');
+                        return;
+                    }
+
+                    // fill the targeted form
+                    fillAddressForm(currentTargetForm, addressObj);
+
+                    // If they selected delivery and "same as delivery" is checked, copy to billing too
+                    const sameCB = document.getElementById('sameAsDelivery');
+                    if (currentTargetForm === 'delivery' && sameCB && sameCB.checked) {
+                        fillAddressForm('billing', addressObj);
+                        // Also copy city select options/selection safely
+                        const dCity = document.querySelector('[name="delivery[city]"]');
+                        const bCity = document.querySelector('[name="billing[city]"]');
+                        if (dCity && bCity) {
+                            bCity.innerHTML = dCity.innerHTML;
+                            bCity.value = dCity.value;
+                        }
+                    }
+
+                    // close modal (safely get instance or create)
+                    const modalEl = document.getElementById('savedAddressesModal');
+                    if (modalEl) {
+                        let modalInstance = bootstrap.Modal.getInstance(modalEl);
+                        if (!modalInstance) {
+                            modalInstance = new bootstrap.Modal(modalEl);
+                        }
+                        modalInstance.hide();
+                    }
+                });
+            });
+
+            // same-as-delivery checkbox (vanilla JS)
+            const sameCheckbox = document.getElementById('sameAsDelivery');
+            if (sameCheckbox) {
+                sameCheckbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        // copy all delivery values into billing and lock billing inputs
+                        const billingFields = document.querySelectorAll('.billing');
+                        billingFields.forEach(function (el) {
+                            const name = el.getAttribute('name'); // e.g. billing[address_line_1]
+                            if (!name) return;
+                            const correspondingName = name.replace('billing', 'delivery');
+                            const deliveryEl = document.querySelector('[name="' + correspondingName + '"]');
+                            if (deliveryEl) {
+                                el.value = deliveryEl.value;
+                                el.classList.add('readonly');
+                                el.setAttribute('readonly', true);
+                            }
+                        });
+
+                        // copy city options & value
+                        const dCity = document.getElementById('delivery_city');
+                        const bCity = document.getElementById('billing_city');
+                        if (dCity && bCity) {
+                            bCity.innerHTML = dCity.innerHTML;
+                            bCity.value = dCity.value;
+                        }
+                    } else {
+                        // unlock and clear billing fields
+                        const billingFields = document.querySelectorAll('.billing');
+                        billingFields.forEach(function (el) {
+                            el.value = '';
+                            el.classList.remove('readonly');
+                            el.removeAttribute('readonly');
+                        });
+
+                        const bCity = document.getElementById('billing_city');
+                        if (bCity) bCity.innerHTML = '<option value="">-- Select City --</option>';
+                    }
+                });
             }
         });
     </script>

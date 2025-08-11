@@ -62,6 +62,8 @@ Route::prefix('customer')->name('customer.')->group(function () {
         Route::get('orders', [CustomerDashboardController::class, 'viewOrders'])->name('orders');
         Route::get('orders/{id}', [CustomerDashboardController::class, 'viewOrderItems'])->name('order.items');
         Route::get('profile', [CustomerDashboardController::class, 'viewProfile'])->name('profile');
+        Route::get('addresses', [customerDashboardController::class, 'viewAddresses'])->name('addresses');
+        Route::post('addAddress', [customerDashboardController::class, 'addAddress'])->name('addAddress');
     });
 
     // Password Reset Routes

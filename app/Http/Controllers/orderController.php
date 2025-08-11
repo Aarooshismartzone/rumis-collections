@@ -12,8 +12,8 @@ class orderController extends Controller
     {
         $request->validate([
             // Delivery
-            'delivery.fname' => ['required', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/[<>$#]/'],
-            'delivery.lname' => ['nullable', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/[<>$#]/'],
+            'delivery.fname' => ['required', 'regex:/^[A-Za-z\s,()\/-]+$/', 'not_regex:/[<>$#]/'],
+            'delivery.lname' => ['nullable', 'regex:/^[A-Za-z\s,()\/-]+$/', 'not_regex:/[<>$#]/'],
             'delivery.company_name' => ['nullable', 'not_regex:/[<>$#]/'],
             'delivery.address_line_1' => ['required', 'not_regex:/[<>$#]/'],
             'delivery.address_line_2' => ['nullable', 'not_regex:/[<>$#]/'],
@@ -24,8 +24,8 @@ class orderController extends Controller
             'delivery.pnum' => ['required', 'regex:/^[0-9\+]+$/', 'max:13'],
 
             // Billing
-            'billing.fname' => ['required', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/[<>$#]/'],
-            'billing.lname' => ['nullable', 'regex:/^[A-Za-z\s]+$/', 'not_regex:/[<>$#]/'],
+            'billing.fname' => ['required', 'regex:/^[A-Za-z\s,()\/-]+$/', 'not_regex:/[<>$#]/'],
+            'billing.lname' => ['nullable', 'regex:/^[A-Za-z\s,()\/-]+$/', 'not_regex:/[<>$#]/'],
             'billing.company_name' => ['nullable', 'not_regex:/[<>$#]/'],
             'billing.address_line_1' => ['required', 'not_regex:/[<>$#]/'],
             'billing.address_line_2' => ['nullable', 'not_regex:/[<>$#]/'],
