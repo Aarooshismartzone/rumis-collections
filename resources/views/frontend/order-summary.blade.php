@@ -61,6 +61,7 @@
             <a href="{{ route('payment') }}" class="btn btn-primary px-4 py-2">Proceed to Make Payment</a>
         </div>
     </div>
+    @include('frontend.layouts.partials.footer')
 </body>
 
 </html>
