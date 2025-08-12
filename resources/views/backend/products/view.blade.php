@@ -6,70 +6,104 @@
 
 @section('content')
     @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
 
-    <a href="{{ route('backend.products.add') }}" class="btn btn-primary mb-3">Add Product</a>
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">All Products</h4>
+            <div>
+                <a href="{{ route('backend.products.add') }}" class="btn btn-light btn-sm me-2">
+                    <i class="fas fa-plus"></i> Add Product
+                </a>
+                <button class="btn btn-light btn-sm" onclick="location.reload()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
 
-    <table id="myTableProducts" class="table table-bordered">
-        <thead>
-            <tr>
-                <th>SN</th>
-                <th>ID</th>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Actual Price</th>
-                <th>Discounted Price</th>
-                <th>Stock</th>
-                <th>Featured</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($products as $key => $product)
-                <tr>
-                    <td>{{ $key + 1 }}</td>
-                    <td>{{ $product->id }}</td>
-                    <td><img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}" width="180"
-                            height="auto"></td>
-                    <td>{{ $product->product_name }}</td>
-                    <td>{{ $product->category->category_name ?? 'Uncategorized' }}</td>
-                    <td>₹{{ number_format($product->actual_price, 2) }}</td>
-                    <td>₹{{ number_format($product->discounted_price, 2) }}</td>
-                    <td>{{ $product->stock }}</td>
-                    <td>{{ $product->is_featured ? 'Yes' : 'No' }}</td>
-                    <td>
-                        <div class="d-flex">
-                            <a href="{{ route('backend.products.add', $product->id) }}"
-                                style="color: green; text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <form action="{{ route('backend.products.delete', $product->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="submit" id="delete-btn-{{ $product->id }}" style="display:none;"></button>
-
-                                <p style="color: red; margin-left: 10px; cursor: pointer;"
-                                    onclick="if(confirm('Are you sure?')) { $('#delete-btn-{{ $product->id }}').click(); }">
-                                    <i class="fa-solid fa-trash"></i>
-                                </p>
-                            </form>
-                            <a href="{{ route('frontend.viewproduct', $product->product_slug) }}" target="_blank"
-                                style="color: purple; text-decoration: none; margin-left: 10px;"><i
-                                    class="fa-solid fa-eye"></i></a>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        <div class="card-body">
+            <table id="productsTable" class="table table-hover align-middle table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Actual Price</th>
+                        <th>Discounted Price</th>
+                        <th>Stock</th>
+                        <th>Featured</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($products as $key => $product)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $product->id }}</td>
+                            <td>
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}"
+                                    class="img-thumbnail" style="max-width: 80px;">
+                            </td>
+                            <td>{{ $product->product_name }}</td>
+                            <td>
+                                @if ($product->category)
+                                    <span class="badge bg-info text-dark">{{ $product->category->category_name }}</span>
+                                @else
+                                    <span class="badge bg-secondary">Uncategorized</span>
+                                @endif
+                            </td>
+                            <td>₹{{ number_format($product->actual_price, 2) }}</td>
+                            <td>₹{{ number_format($product->discounted_price, 2) }}</td>
+                            <td>{{ $product->stock }}</td>
+                            <td>
+                                @if ($product->is_featured)
+                                    <span class="badge bg-success">Yes</span>
+                                @else
+                                    <span class="badge bg-warning text-dark">No</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('backend.products.add', $product->id) }}"
+                                        class="btn btn-sm btn-outline-success" title="Edit">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <form action="{{ route('backend.products.delete', $product->id) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('frontend.viewproduct', $product->product_slug) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-primary" title="View">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function() {
-            $('#myTableProducts').DataTable({
+            $('#productsTable').DataTable({
                 dom: 'Bfrtip',
-                buttons: ['excel', 'print']
+                buttons: ['excel', 'print'],
+                order: [
+                    [1, "desc"]
+                ],
+                pageLength: 10
             });
         });
     </script>

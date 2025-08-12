@@ -101,7 +101,9 @@ class razorpayController extends Controller
                     ]);
                 }
 
+                $order->payment_method = 'Razorpay';
                 $order->order_status = 'payment-success';
+                $order->payment_id = $paymentId;
                 $order->save();
 
                 $note_mail = new Note;

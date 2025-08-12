@@ -1,56 +1,102 @@
-.master-product{
+/* Master Container */
+.master-product {
     width: 100%;
     height: auto;
 }
 
-.product-title{
-    font-size: 36px;
-    color: rgb(17, 15, 17);
+/* Product Title */
+.product-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #212529; /* Dark Gray-Black */
 }
 
-.product-description{
-    font-weight: bold;
-    color: rgb(101, 100, 100);
+/* Product Description */
+.product-description {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6c757d; /* Medium Gray */
+    line-height: 1.6;
 }
 
+/* Pricing */
 .product-price {
-    font-size: 28px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #000;
 }
 
-.actual-price{
-    color: gray;
+.actual-price {
+    color: #6c757d; /* Gray */
     text-decoration: line-through;
+    font-size: 1.2rem;
 }
 
-.pd-section-title{
+/* Section Titles */
+.pd-section-title {
     text-align: center;
     font-family: "Cinzel", serif;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
+    font-size: 1.3rem;
+    color: #343a40;
+    border-bottom: 2px solid #dee2e6;
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
-@media screen and (max-width: 980px){
+/* Buttons */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Carousel Controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Table Styling */
+.table {
+    font-size: 0.95rem;
+    background-color: #fff;
+}
+
+.table th {
+    font-weight: 600;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 980px) {
     .product-title {
-        font-size: 28px;
+        font-size: 1.8rem;
     }
 
     .product-price {
-        font-size: 24px;
+        font-size: 1.4rem;
     }
 }
 
-@media screen and (max-width: 600px){
+@media (max-width: 600px) {
     .product-title {
-        font-size: 22px;
+        font-size: 1.4rem;
     }
 
     .product-price {
-        font-size: 18px;
+        font-size: 1.2rem;
     }
 }
 
-@media screen and (max-width: 360px){
+@media (max-width: 360px) {
     .product-title {
-        font-size: 18px;
+        font-size: 1.2rem;
     }
 }

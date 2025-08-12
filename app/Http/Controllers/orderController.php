@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use App\Models\Note;
+use App\Models\Orderitem;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class orderController extends Controller
@@ -95,7 +99,7 @@ class orderController extends Controller
             'pin_code' => $order->d_pin_code,
             'pnum' => $order->d_pnum,
         ];
-        
+
         // Add Billing Info
         $checkoutData['billing'] = [
             'fname' => $order->b_fname,
@@ -111,5 +115,68 @@ class orderController extends Controller
         ];
         Session::put('checkout_summary', $checkoutData);
         return redirect()->route('order.summary');
+    }
+
+    //BACKEND FUNCTIONS
+    public function viewOrders()
+    {
+        if (Auth::check()) {
+            $orders = Order::orderBy('id', 'desc')->get();
+            return view('backend.orders.all-orders', [
+                'user' => Auth::user(),
+                'orders' => $orders,
+            ]);
+        }
+        return redirect('/internal/login');
+    }
+
+    public function viewOrderDetails($id)
+    {
+        if (Auth::check()) {
+            $order = Order::find($id);
+            $customer = null; //default to null
+            if ($order->customer_id != null) {
+                $customer = Customer::find($order->customer_id);
+            }
+            $orderitems = Orderitem::where('order_id', $id)->get();
+            $notes = Note::where('order_id', $id)->orderBy('id', 'desc')->get();
+            return view('backend.orders.individual-order', [
+                'user' => Auth::user(),
+                'order' => $order,
+                'customer' => $customer,
+                'orderitems' => $orderitems,
+                'notes' => $notes,
+            ]);
+        }
+        return redirect('/internal/login');
+    }
+
+    function addOrderNote(Request $request)
+    {
+        if (Auth::check()) {
+            $request->validate([
+                'note' => 'required|regex:/^[a-zA-Z0-9\s]+$/|max:355',
+                'order_id' => 'required|numeric',
+            ]);
+
+            $user = Auth::user(); // Get logged-in user
+            $fullname = trim($user->fname . ' ' . $user->lname);
+
+            $notecontent = $request->note
+                . " - Added by " . $fullname
+                . " on " . date('Y-m-d H:i:s');
+
+            $note = new Note();
+            $note->order_id = $request->order_id;
+            $note->related_to = "Order";
+            $note->note = $notecontent;
+            $note->is_manual = true;
+            $note->user_id = $user->id;
+            $note->save();
+
+            return redirect()->back()->with('success', 'Note added successfully');
+        }
+
+        return redirect('/internal/login');
     }
 }

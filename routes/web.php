@@ -17,11 +17,6 @@ use App\Http\Middleware\CustomerAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     dd(Hash::make('2HrU11&eE'));
-//     return view('frontend.home');
-// });
-
 //FRONTEND
 Route::get('/', [frontendController::class, 'home'])->name('frontend.home');
 Route::get('/shop/{category_slug?}', [frontendController::class, 'shop'])->name('frontend.shop');
@@ -67,10 +62,10 @@ Route::prefix('customer')->name('customer.')->group(function () {
     });
 
     // Password Reset Routes
-    Route::get('forgot-password', [CustomerPasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
-    Route::post('forgot-password', [CustomerPasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
-    Route::get('reset-password/{token}', [CustomerPasswordResetController::class, 'showResetForm'])->name('password.reset');
-    Route::post('reset-password', [CustomerPasswordResetController::class, 'reset'])->name('password.update');
+    Route::get('forgot-password', [customerPasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('forgot-password', [customerPasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('reset-password/{token}', [customerPasswordResetController::class, 'showResetForm'])->name('password.reset');
+    Route::post('reset-password', [customerPasswordResetController::class, 'reset'])->name('password.update');
 });
 
 //BACKEND
@@ -83,7 +78,8 @@ Route::post('/internal/login', [userController::class, 'login'])->name('login.su
 Route::get('/backend/logout', [userController::class, 'logout'])->name('admin.logout');
 
 // Dashboard
-Route::get('/backend/dashboard', [dashboardController::class, 'dashboard']);
+Route::get('/backend/dashboard', [dashboardController::class, 'dashboard'])->name('dashboard');
+Route::post('/backend/dashboard/data', [dashboardController::class, 'fetchDashboardData'])->name('dashboard.data');
 
 //Category
 Route::get("/backend/categories", [productCategoryController::class, 'viewCategories'])->name('backend.categories.view');
@@ -96,3 +92,8 @@ Route::get('/backend/products', [productController::class, 'viewProducts'])->nam
 Route::get('/backend/products/add/{product_id?}', [productController::class, 'showAddProductForm'])->name('backend.products.add');
 Route::post('/backend/products/store/{product_id?}', [productController::class, 'storeProduct'])->name('backend.products.store');
 Route::delete('/backend/products/delete/{id}', [productController::class, 'deleteProduct'])->name('backend.products.delete');
+
+//Orders
+Route::get('/backend/orders', [orderController::class, 'viewOrders'])->name('backend.orders.view');
+Route::get('/backend/orders/{id}', [orderController::class, 'viewOrderDetails'])->name('backend.orders.show');
+Route::post('/backend/orders/addOrderNote', [orderController::class, 'addOrderNote'])->name('backend.orders.addnote');
