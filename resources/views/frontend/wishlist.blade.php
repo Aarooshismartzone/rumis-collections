@@ -51,14 +51,54 @@
                         <p>{{ $cart->product->product_name }}</p>
                     </div>
                     <div class="col-md-4 col-sm-4 col-6">
-                        <p><span class="actual-price">₹{{ $cart->product->actual_price }}</span>
-                            ₹{{ $cart->product->discounted_price }}</p>
+                        <p>
+                            <span class="actual-price">₹{{ $cart->product->actual_price }}</span>
+                            ₹{{ $cart->product->discounted_price }}
+                        </p>
                     </div>
                     <div class="col-md-4 col-sm-4 col-6">
-                        <a href="{{ route('frontend.moveToCart', ['id' => $cart->id]) }}">Move To Cart</a>
+                        @php
+                            $sizes = explode(',', $cart->product->product_size);
+                            $cat = $cart->product->category;
+                        @endphp
+
+                        @if ($cat->is_productsize)
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#sizeModal{{ $cart->id }}">
+                                Move To Cart
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="sizeModal{{ $cart->id }}" tabindex="-1"
+                                aria-labelledby="sizeModalLabel{{ $cart->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Select Size</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            @foreach ($sizes as $size)
+                                                <a href="{{ route('frontend.moveToCart', ['id' => $cart->id, 'size' => trim($size)]) }}"
+                                                    class="btn btn-outline-primary m-1">
+                                                    {{ trim($size) }}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <a href="{{ route('frontend.moveToCart', ['id' => $cart->id]) }}"
+                                class="btn btn-primary btn-sm">
+                                Move To Cart
+                            </a>
+                        @endif
                     </div>
                 </div>
             @endforeach
+
         @endif
     </div>
 </body>

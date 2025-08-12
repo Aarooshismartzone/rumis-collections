@@ -43,6 +43,16 @@ class frontendController extends Controller
         return view('frontend.home', compact('products', 'customer'));
     }
 
+    public function about(){
+        $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
+        return view('frontend.about', compact('customer'));
+    }
+
+    public function contact(){
+        $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
+        return view('frontend.contact', compact('customer'));
+    }
+
     public function shop($category_slug = null)
     {
         $query = Product::query();
@@ -127,7 +137,6 @@ class frontendController extends Controller
         } else {
             $carts = collect(); // empty collection
         }
-
         return view('frontend.wishlist', compact('carts'));
     }
 

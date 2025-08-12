@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Orderitem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Cart;
@@ -126,40 +127,37 @@ class cartController extends Controller
         return redirect()->back()->with('msg', 'Product added to wishlist successfully!');
     }
 
-    public function moveToCart($id)
+    public function moveToCart(Request $request, $id)
     {
-        // Find cart by ID
         $cart = Cart::find($id);
 
         if (!$cart) {
             return redirect()->back()->with('msg', 'Cart item not found.');
         }
 
-        // Check if the user is logged in
-        if (Session::has('customer_id')) {
-            // Check if customer_id matches the customer_id of the cart
-            if ($cart->customer_id == Session::get('customer_id')) {
-                $cart->is_wishlist = 0;
-                $cart->save();
-                return redirect()->back()->with('msg', 'Product successfully moved to cart!');
-            } else {
-                return redirect()->back()->with('msg', 'Unauthorized access.');
+        // Authenticated customer
+        if (Session::has('customer_id') && $cart->customer_id == Session::get('customer_id')) {
+            $cart->is_wishlist = 0;
+            if ($request->has('size')) {
+                $cart->product_size = $request->size;
             }
+            $cart->save();
+
+            return redirect()->back()->with('msg', 'Product successfully moved to cart!');
         }
-        // Check if it's a guest user
-        else if (Session::has('guest_token')) {
-            if ($cart->guest_token == Session::get('guest_token')) {
-                $cart->is_wishlist = 0;
-                $cart->save();
-                return redirect()->back()->with('msg', 'Product successfully moved to cart!');
-            } else {
-                return redirect()->back()->with('msg', 'Unauthorized access.');
+
+        // Guest user
+        if (Session::has('guest_token') && $cart->guest_token == Session::get('guest_token')) {
+            $cart->is_wishlist = 0;
+            if ($request->has('size')) {
+                $cart->product_size = $request->size;
             }
+            $cart->save();
+
+            return redirect()->back()->with('msg', 'Product successfully moved to cart!');
         }
-        // Neither customer_id nor guest_token available
-        else {
-            return redirect()->back()->with('msg', 'Customer ID or Guest token not found for this item.');
-        }
+
+        return redirect()->back()->with('msg', 'Unauthorized access.');
     }
 
 

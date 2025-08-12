@@ -33,6 +33,9 @@ Route::get('/checkout', [frontendController::class, 'viewCheckoutPage'])->name('
 Route::post('/order/store', [orderController::class, 'addOrder'])->name('order.store');
 Route::get('/order-summary', [frontendController::class, 'viewSummary'])->name('order.summary');
 
+Route::get('/about', [frontendController::class, 'about'])->name('frontend.about');
+Route::get('/contact', [frontendController::class, 'contact'])->name('frontend.contact');
+
 //payment gateway
 Route::get('/proceed-to-payment', [razorpayController::class, 'viewPaymentPage'])->name('payment');
 Route::post('/proceed-to-payment', [razorpayController::class, 'proceedToPayment'])->name('payment.proceed');

@@ -74,7 +74,6 @@
                             </div>
                         </div>
                     @endif
-
                     {{-- Action Buttons --}}
                     <div class="row mt-4 g-3">
                         <div class="col-md-6 col-12">

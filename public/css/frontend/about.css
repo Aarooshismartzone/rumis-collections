@@ -1,0 +1,65 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Section Headings */
+h1, h3, h4 {
+    color: #222;
+}
+
+p {
+    line-height: 1.7;
+}
+
+/* Image Styling */
+.img-fluid {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.img-fluid:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Tagline Text */
+.text-muted {
+    font-size: 1rem;
+    color: #666 !important;
+}
+
+/* Fade-in Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards;
+}
+
+.fade-in-delay {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Section Padding */
+section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+/* Responsive Fixes */
+@media (max-width: 767px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    h3 {
+        font-size: 1.4rem;
+    }
+}
