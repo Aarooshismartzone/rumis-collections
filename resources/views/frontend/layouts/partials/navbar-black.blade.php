@@ -53,10 +53,10 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="{{ route('frontend.about') }}">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="{{ route('frontend.contact') }}">Contact</a>
                 </li>
             </ul>
             <form class="d-flex align-items-center position-relative me-3" role="search" method="GET"
