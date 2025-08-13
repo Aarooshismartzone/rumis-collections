@@ -2,9 +2,9 @@
     <div class="accordion-overlay">
         <!-- Content inside overlay -->
         <div class="container">
-            <h5>{{$customer ? 'Dear '.$customer->fname.',' : ''}}</h5>
+            <h5 class="tag-line">{{$customer ? 'Dear '.$customer->fname.',' : ''}}</h5>
             <h1 class="main-title">Welcome To <span>Rumi's</span></h1>
-            <h4>Where Life And Style Come Together</h4>
+            <h4 class="tag-line">Where Life And Style Come Together</h4>
         </div>
     </div>
 </div>

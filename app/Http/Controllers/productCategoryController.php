@@ -36,25 +36,28 @@ class productCategoryController extends Controller
 
     public function storeCategory(Request $request, $category_id = null)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-            'parent_category' => 'nullable|exists:productcategories,id',
-        ]);
+        if (Auth::check()) {
+            $request->validate([
+                'category_name' => 'required|string|max:255',
+                'parent_category' => 'nullable|exists:productcategories,id',
+            ]);
 
-        if ($category_id) {
-            $category = ProductCategory::findOrFail($category_id);
-            $message = 'Category updated successfully!';
-        } else {
-            $category = new ProductCategory();
-            $message = 'Category added successfully!';
+            if ($category_id) {
+                $category = ProductCategory::findOrFail($category_id);
+                $message = 'Category updated successfully!';
+            } else {
+                $category = new ProductCategory();
+                $message = 'Category added successfully!';
+            }
+
+            $category->category_name = $request->category_name;
+            $category->category_slug = Str::slug($request->category_name);
+            $category->parent_category = $request->parent_category;
+            $category->save();
+
+            return redirect()->route('backend.categories.view')->with('success', $message);
         }
-
-        $category->category_name = $request->category_name;
-        $category->category_slug = Str::slug($request->category_name);
-        $category->parent_category = $request->parent_category;
-        $category->save();
-
-        return redirect()->route('backend.categories.view')->with('success', $message);
+        return redirect('/internal/login');
     }
 
     public function deleteCategory($id)

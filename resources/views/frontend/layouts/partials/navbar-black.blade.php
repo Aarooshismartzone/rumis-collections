@@ -4,6 +4,7 @@
             <img src="{{ asset('images/logo/logo.png') }}" class="navbar-logo">
         </a>
         <div class="d-flex">
+            {{-- Mobile view icons --}}
             <div class="align-items-center icons-m-view" style="font-size: 14px">
                 <a href="{{ route('frontend.shoppingcart') }}" class="me-3 position-relative" style="color: black">
                     <i class="fas fa-shopping-cart"></i>
@@ -21,16 +22,45 @@
                         </span>
                     @endif
                 </a>
-                <a href="{{ route('customer.login') }}" target="_blank" style="color: black">
-                    <i class="fas fa-user"></i>
-                </a>
+
+                @php
+                    $isLoggedIn = Session::has('customer_id');
+                    $fname = Session::get('fname');
+                @endphp
+
+                <div class="dropdown">
+                    <a href="{{ $isLoggedIn ? '#' : route('customer.login') }}"
+                        class="dropdown-toggle d-flex align-items-center" style="color: black"
+                        id="customerDropdownMobile"
+                        @if ($isLoggedIn) data-bs-toggle="dropdown" aria-expanded="false" @endif>
+                        <i class="fas fa-user"></i>
+                    </a>
+
+                    @if ($isLoggedIn)
+                        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="customerDropdownMobile">
+                            <li class="dropdown-header">Hi, {{ $fname }}</li>
+                            <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}"
+                                    target="_blank">Account</a></li>
+                            <li><a class="dropdown-item" href="{{ route('customer.orders') }}"
+                                    target="_blank">Orders</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="{{ route('customer.logout') }}">Logout</a>
+                            </li>
+                        </ul>
+                    @endif
+                </div>
             </div>
+
             <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
+
+        {{-- Navbar links --}}
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -59,13 +89,18 @@
                     <a class="nav-link" href="{{ route('frontend.contact') }}">Contact</a>
                 </li>
             </ul>
+
+            {{-- Search --}}
             <form class="d-flex align-items-center position-relative me-3" role="search" method="GET"
                 action="{{ route('frontend.search') }}">
-                <input name="query" class="form-control me-2 searchbox" type="search" placeholder="Search" aria-label="Search">
+                <input name="query" class="form-control me-2 searchbox" type="search" placeholder="Search"
+                    aria-label="Search">
                 <button class="btn search-icon" style="margin-left: -10px; margin-right: 10px;" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
+
+            {{-- Desktop view icons --}}
             <div class="align-items-center icons-d-view" style="font-size: 14px">
                 <a href="{{ route('frontend.shoppingcart') }}" class="me-3 position-relative" style="color: black">
                     <i class="fas fa-shopping-cart"></i>
@@ -83,9 +118,30 @@
                         </span>
                     @endif
                 </a>
-                <a href="{{ route('customer.login') }}" style="color: black">
-                    <i class="fas fa-user"></i>
-                </a>
+
+                <div class="dropdown">
+                    <a href="{{ $isLoggedIn ? '#' : route('customer.login') }}"
+                        class="dropdown-toggle d-flex align-items-center" style="color: black"
+                        id="customerDropdownDesktop"
+                        @if ($isLoggedIn) data-bs-toggle="dropdown" aria-expanded="false" @endif>
+                        <i class="fas fa-user"></i>
+                    </a>
+
+                    @if ($isLoggedIn)
+                        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="customerDropdownDesktop">
+                            <li class="dropdown-header">Hi, {{ $fname }}</li>
+                            <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}"
+                                    target="_blank">Account</a></li>
+                            <li><a class="dropdown-item" href="{{ route('customer.orders') }}"
+                                    target="_blank">Orders</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="{{ route('customer.logout') }}">Logout</a>
+                            </li>
+                        </ul>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

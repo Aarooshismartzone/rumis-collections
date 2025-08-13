@@ -21,11 +21,35 @@
                         </span>
                     @endif
                 </a>
-                <a href="#" class="text-white">
-                    <i class="fas fa-user"></i>
-                </a>
-            </div>
 
+                @php
+                    $isLoggedIn = Session::has('customer_id');
+                    $fname = Session::get('fname');
+                @endphp
+
+                <div class="dropdown">
+                    <a href="{{ $isLoggedIn ? '#' : route('customer.login') }}"
+                        class="text-white dropdown-toggle d-flex align-items-center" id="customerDropdownMobile"
+                        @if ($isLoggedIn) data-bs-toggle="dropdown" aria-expanded="false" @endif>
+                        <i class="fas fa-user"></i>
+                    </a>
+
+                    @if ($isLoggedIn)
+                        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="customerDropdownMobile">
+                            <li class="dropdown-header">Hi, {{ $fname }}</li>
+                            <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}"
+                                    target="_blank">Account</a></li>
+                            <li><a class="dropdown-item" href="{{ route('customer.orders') }}"
+                                    target="_blank">Orders</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="{{ route('customer.logout') }}">Logout</a>
+                            </li>
+                        </ul>
+                    @endif
+                </div>
+            </div>
             <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -100,8 +124,10 @@
                     @if ($isLoggedIn)
                         <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="customerDropdown">
                             <li class="dropdown-header">Hi, {{ $fname }}</li>
-                            <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}" target="_blank">Account</a></li>
-                            <li><a class="dropdown-item" href="{{ route('customer.orders') }}" target="_blank">Orders</a></li>
+                            <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}"
+                                    target="_blank">Account</a></li>
+                            <li><a class="dropdown-item" href="{{ route('customer.orders') }}"
+                                    target="_blank">Orders</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

@@ -183,12 +183,29 @@ html, body {
     }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 487px) {
     .navbar-logo {
         width: 80px;
     }
 
     .section-title{
         font-size: 20px;
+    }
+
+    .accordion-overlay {
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+
+    .main-title {
+        font-size: 22px;
+    }
+
+    .tag-line {
+        font-size: 14px;
+    }
+
+    .accordion-background{
+        background-position:right;
     }
 }
