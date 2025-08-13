@@ -43,14 +43,34 @@ class frontendController extends Controller
         return view('frontend.home', compact('products', 'customer'));
     }
 
-    public function about(){
+    public function about()
+    {
         $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
         return view('frontend.about', compact('customer'));
     }
 
-    public function contact(){
+    public function contact()
+    {
         $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
         return view('frontend.contact', compact('customer'));
+    }
+
+    public function privacyPolicy()
+    {
+        $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
+        return view('frontend.privacy-policy', compact('customer'));
+    }
+
+    public function refundPolicy()
+    {
+        $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
+        return view('frontend.refund-policy', compact('customer'));
+    }
+
+    public function cancellationPolicy()
+    {
+        $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
+        return view('frontend.cancellation-policy', compact('customer'));
     }
 
     public function shop($category_slug = null)

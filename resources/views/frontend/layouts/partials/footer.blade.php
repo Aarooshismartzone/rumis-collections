@@ -14,8 +14,8 @@
                 <ul class="list-unstyled">
                     <li><a href="/" class="text-white text-decoration-none">Home</a></li>
                     <li><a href="{{ route('frontend.shop') }}" class="text-white text-decoration-none">Shop</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">About</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+                    <li><a href="{{ route('frontend.about') }}" class="text-white text-decoration-none">About</a></li>
+                    <li><a href="{{ route('frontend.contact') }}" class="text-white text-decoration-none">Contact</a></li>
                 </ul>
             </div>
 
@@ -23,9 +23,9 @@
             <div class="col-md-4 mb-3">
                 <h5>Important Links</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Cancellation Policy</a></li>
-                    <li><a href="#" class="text-white text-decoration-none">Refund Policy</a></li>
+                    <li><a href="{{ route('privacy.policy') }}" class="text-white text-decoration-none">Privacy Policy</a></li>
+                    <li><a href="{{ route('cancellation.policy') }}" class="text-white text-decoration-none">Cancellation Policy</a></li>
+                    <li><a href="{{ route('refund.policy') }}" class="text-white text-decoration-none">Refund Policy</a></li>
                 </ul>
             </div>
 
