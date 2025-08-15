@@ -1,6 +1,7 @@
 @php
+    $freeDeliveryMin = $generics['delivery_free_min_price'] ?? 0;
+    $delivery = ($totalPrice >= ($generics['delivery_free_min_price'] ?? 0)) ? 0 : ($generics['delivery_charges'] ?? 0);
     $gst = $generics['is_gst'] ? $totalPrice * ($generics['gst_rate_percent'] / 100) : 0;
-    $delivery = $generics['delivery_charges'] ?? 0;
     $grandTotal = $totalPrice + $gst + $delivery;
 @endphp
 

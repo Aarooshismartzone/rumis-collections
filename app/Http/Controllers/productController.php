@@ -100,6 +100,10 @@ class productController extends Controller
             $product->product_slug = $count ? "$slug-$count" : $slug;
             $product->number_of_orders = 0;
 
+            if($request->sizes){
+                $product->product_size = $request->sizes;
+            }
+
             foreach ($imageFields as $field) {
                 if ($request->hasFile($field)) {
                     $product->$field = $request->file($field)->store('images/products', 'public');

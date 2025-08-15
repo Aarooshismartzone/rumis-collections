@@ -89,6 +89,31 @@
                     </div>
                 </div>
 
+                {{-- Available Product Sizes --}}
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Available Sizes</label>
+                    <div id="size-buttons">
+                        @php
+                            $availableSizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
+                            $sizesString = old('sizes', isset($product) ? $product->product_size ?? '' : '');
+                            $selectedSizes = $sizesString ? array_map('trim', explode(',', $sizesString)) : [];
+                        @endphp
+
+                        @foreach ($availableSizes as $size)
+                            <button type="button"
+                                class="btn btn-outline-primary me-1 mb-1 size-btn {{ in_array($size, $selectedSizes) ? 'active btn-primary' : '' }}"
+                                data-size="{{ $size }}">
+                                {{ $size }}
+                            </button>
+                        @endforeach
+
+                    </div>
+                    <input type="hidden" name="sizes" id="sizes"
+                        value="{{ old('sizes', isset($product) ? $product->sizes : '') }}">
+                </div>
+
                 {{-- Featured Switch --}}
                 <div class="form-check form-switch mb-3">
                     <input type="hidden" name="is_featured" value="0">
@@ -212,6 +237,19 @@
 
             $(document).on('click', '.remove-info-row', function() {
                 $(this).closest('.product-info-row').remove();
+            });
+
+            $('.size-btn').click(function() {
+                $(this).toggleClass('active btn-primary btn-outline-primary');
+
+                // Collect selected sizes
+                let selected = [];
+                $('.size-btn.active').each(function() {
+                    selected.push($(this).data('size'));
+                });
+
+                // Store as "S, M, L"
+                $('#sizes').val(selected.join(', '));
             });
         });
     </script>

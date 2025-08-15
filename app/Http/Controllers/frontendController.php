@@ -201,7 +201,8 @@ class frontendController extends Controller
         $totalPrice = collect($carts)->sum(function ($item) {
             return $item->product->discounted_price * $item->quantity;
         });
-        $deliveryCharge = isset($generics['delivery_charges']) ? (float) $generics['delivery_charges'] : 0;
+        $freeDeliveryMin = $generics['delivery_free_min_price'] ?? 0;
+        $deliveryCharge = ($totalPrice >= $freeDeliveryMin) ? 0 : ($generics['delivery_charges'] ?? 0);
         $gstAmount = ($gstRate / 100) * $totalPrice;
         $grandTotal = $totalPrice + $deliveryCharge + $gstAmount;
 

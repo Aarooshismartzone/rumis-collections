@@ -211,11 +211,9 @@ class cartController extends Controller
 
     public function refreshCartTotals()
     {
-        // Determine user context (customer_id or guest_token)
         $customer_id = Session::get('customer_id');
         $guest_token = Session::get('guest_token');
 
-        // Fetch relevant cart items
         $carts = Cart::with('product')->where(function ($query) use ($customer_id, $guest_token) {
             if ($customer_id) {
                 $query->where('customer_id', $customer_id);
@@ -224,9 +222,10 @@ class cartController extends Controller
             }
         })->get();
 
-        // Calculate total price
         $totalPrice = $carts->sum(fn($cart) => $cart->product->discounted_price * $cart->quantity);
 
-        return view('frontend.cart._totals', compact('totalPrice'))->render();
+        $generics = Generic::pluck('value', 'key')->toArray();
+
+        return view('frontend.cart._totals', compact('totalPrice', 'generics'))->render();
     }
 }

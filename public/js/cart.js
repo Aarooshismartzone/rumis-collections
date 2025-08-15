@@ -7,7 +7,7 @@ $(document).ready(function () {
                 _token: csrfToken
             },
             success: function (html) {
-                $(".cart-summary").html(html);
+                $(".cart-summary").html(html); // This now contains updated delivery charge logic
             },
             error: function (xhr) {
                 console.error(xhr.responseText);
@@ -30,7 +30,6 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.success) {
-                    //  console.log(response.newQuantity);
                     if (response.cart_empty) {
                         location.reload();
                     }
@@ -38,16 +37,15 @@ $(document).ready(function () {
                     if (response.no_item) {
                         $(".cart-item-" + cartId).fadeOut(300, function () {
                             $(this).remove();
+                            updateCartSummary(); // Update after removal
                         });
-                        //  location.reload();
                     } else {
                         $(".cart-quantity-" + cartId).text(response.newQuantity);
                         let total = (response.newQuantity * response.itemRate).toFixed(2);
                         total = Number(total).toLocaleString('en-IN', { minimumFractionDigits: 2 });
                         $(".cart-amount-" + cartId).text("₹" + total);
+                        updateCartSummary(); // Update after quantity change
                     }
-                    // Refresh totals from server
-                    updateCartSummary();
                 } else {
                     alert(response.message);
                 }
@@ -58,6 +56,6 @@ $(document).ready(function () {
         });
     });
 
-    // Initial call to load the latest cart summary on page load
+    // Initial cart summary load
     updateCartSummary();
 });

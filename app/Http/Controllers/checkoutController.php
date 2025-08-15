@@ -43,9 +43,12 @@ class checkoutController extends Controller
 
         // Calculate totals
         $totalPrice = collect($carts)->sum(fn($item) => $item->price * $item->quantity);
-        $deliveryCharge = isset($generics['delivery_charges']) ? (float) $generics['delivery_charges'] : 0;
+        $freeDeliveryMin = $generics['delivery_free_min_price'] ?? 0;
+        $deliveryCharge = ($totalPrice >= $freeDeliveryMin) ? 0 : ($generics['delivery_charges'] ?? 0);
+
         $gstAmount = ($gstRate / 100) * $totalPrice;
         $grandTotal = $totalPrice + $deliveryCharge + $gstAmount;
+           // dd($deliveryCharge);
 
         return view('frontend.checkout', compact(
             'carts',
