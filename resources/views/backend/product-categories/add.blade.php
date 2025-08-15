@@ -13,7 +13,8 @@
                         <h5 class="mb-0">{{ isset($category) ? 'Edit Category' : 'Add a Product Category' }}</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('backend.categories.save', $category->id ?? null) }}" method="POST">
+                        <form action="{{ route('backend.categories.save', $category->id ?? null) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
 
                             {{-- Category Name --}}
@@ -38,6 +39,20 @@
                                 </select>
                             </div>
 
+                            {{-- Category Image --}}
+                            <div class="mb-3">
+                                <label for="category_image" class="form-label">Category Image</label>
+                                <input type="file" class="form-control" id="category_image" name="category_image"
+                                    accept="image/*">
+
+                                @if (isset($category) && $category->category_image)
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $category->category_image) }}" alt="Category Image"
+                                            class="img-thumbnail" width="120">
+                                    </div>
+                                @endif
+                            </div>
+
                             {{-- Submit Button --}}
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">
@@ -47,8 +62,8 @@
                                     <i class="fas fa-arrow-left"></i> Cancel
                                 </a>
                             </div>
-
                         </form>
+
                     </div>
                 </div>
             </div>

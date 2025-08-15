@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class productCategoryController extends Controller
@@ -40,6 +41,7 @@ class productCategoryController extends Controller
             $request->validate([
                 'category_name' => 'required|string|max:255',
                 'parent_category' => 'nullable|exists:productcategories,id',
+                'category_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             ]);
 
             if ($category_id) {
@@ -53,6 +55,16 @@ class productCategoryController extends Controller
             $category->category_name = $request->category_name;
             $category->category_slug = Str::slug($request->category_name);
             $category->parent_category = $request->parent_category;
+
+            // Handle image upload
+            if ($request->hasFile('category_image')) {
+                // Delete old image if exists
+                if (!empty($category->category_image) && Storage::disk('public')->exists($category->category_image)) {
+                    Storage::disk('public')->delete($category->category_image);
+                }
+                $category->category_image = $request->file('category_image')->store('images/productcategories', 'public');
+            }
+
             $category->save();
 
             return redirect()->route('backend.categories.view')->with('success', $message);
@@ -71,6 +83,9 @@ class productCategoryController extends Controller
                     ->with('error', 'Cannot delete category with subcategories!');
             }
 
+            if (!empty($category->category_image) && Storage::disk('public')->exists($category->category_image)) {
+                    Storage::disk('public')->delete($category->category_image);
+                }
             // Delete category
             $category->delete();
             return redirect()->route('backend.categories.view')
