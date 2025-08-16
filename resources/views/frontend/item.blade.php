@@ -3,6 +3,7 @@
 
 <head>
     @include('frontend.layouts.partials.header')
+    <link rel="icon" href="{{ asset('storage/' . $product->image) }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('css/frontend/navbar-black.css') }}">
     <link rel="stylesheet" href="{{ asset('css/frontend/productpage.css') }}">
     <title>{{ $product->product_name ?? 'Product Details' }}</title>

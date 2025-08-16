@@ -54,6 +54,7 @@ class productCategoryController extends Controller
 
             $category->category_name = $request->category_name;
             $category->category_slug = Str::slug($request->category_name);
+            $category->is_productsize = 0;
             $category->parent_category = $request->parent_category;
 
             // Handle image upload

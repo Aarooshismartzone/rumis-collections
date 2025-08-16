@@ -6,8 +6,9 @@
     <div class="card border-0 product-card">
         <a href="{{ route('frontend.viewproduct', ['product_slug' => $product->product_slug]) }}"
             style="color: inherit; text-decoration: none;" target="_blank">
-            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" style="z-index: 10"
-                alt="{{ $product->product_name }}">
+            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top product-image" style="z-index: 10"
+                alt="{{ $product->product_name }}" data-original="{{ asset('storage/' . $product->image) }}"
+                @if (!empty($product->ai_1)) data-hover="{{ asset('storage/' . $product->ai_1) }}" @endif>
         </a>
         <div class="card-body text-center">
             <a href="{{ route('frontend.viewproduct', ['product_slug' => $product->product_slug]) }}"
@@ -59,3 +60,20 @@
         </div>
     </div>
 </div>
+<script>
+    $(function() {
+        $('.product-image').hover(
+            function() {
+                let $this = $(this);
+                let hoverImg = $this.data('hover');
+                if (hoverImg) {
+                    $this.addClass('hovering').attr('src', hoverImg);
+                }
+            },
+            function() {
+                $(this).removeClass('hovering')
+                    .attr('src', $(this).data('original'));
+            }
+        );
+    });
+</script>

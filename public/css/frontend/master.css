@@ -93,6 +93,15 @@ html, body {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.product-card .product-image{
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.product-card .product-image.hovering {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
 .atc-btn {
     border: 2px solid black;
     padding-top: 3px;
