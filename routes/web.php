@@ -39,6 +39,12 @@ Route::get('/contact', [frontendController::class, 'contact'])->name('frontend.c
 Route::get('/privacy-policy', [frontendController::class, 'privacyPolicy'])->name('privacy.policy');
 Route::get('/refund-policy', [frontendController::class, 'refundPolicy'])->name('refund.policy');
 Route::get('/cancellation-policy', [frontendController::class, 'cancellationPolicy'])->name('cancellation.policy');
+Route::get('/terms-and-conditions', [frontendController::class, 'termsAndConditions'])->name('terms.conditions');
+Route::get('/shipping', [frontendController::class, 'shipping'])->name('shipping.rules');
+
+Route::get('/3dmug', function () {
+    return view('frontend.3dmug');
+});
 
 
 //payment gateway

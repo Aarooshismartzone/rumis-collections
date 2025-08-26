@@ -73,6 +73,18 @@ class frontendController extends Controller
         return view('frontend.cancellation-policy', compact('customer'));
     }
 
+    public function termsAndConditions()
+    {
+        $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
+        return view('frontend.terms-and-conditions', compact('customer'));
+    }
+
+    public function shipping()
+    {
+        $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
+        return view('frontend.shipping', compact('customer'));
+    }
+
     public function shop($category_slug = null)
     {
         $query = Product::query();

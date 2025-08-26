@@ -34,6 +34,20 @@ class productController extends Controller
         ], 200);
     }
 
+    public function getFeaturedProducts(Request $request)
+{
+    $products = Product::with(['category', 'tags', 'productInfos'])
+                ->where('is_featured', true)
+                ->get();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Featured products fetched successfully',
+        'data' => $products
+    ], 200);
+}
+
+
     /**
      * Get single product by ID
      */

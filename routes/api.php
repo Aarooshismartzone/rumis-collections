@@ -16,4 +16,5 @@ Route::middleware('guestOrAuth')->group(function () {
     Route::get('/categories', [productController::class, 'getCategories']);
     Route::get('/products', [ProductController::class, 'getProducts']);
     Route::get('/products/{id}', [ProductController::class, 'getProductById']);
+    Route::get('/products/featured', [ProductController::class, 'getFeaturedProducts']);
 });

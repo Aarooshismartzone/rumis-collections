@@ -4,7 +4,7 @@
 <head>
     @include('frontend.layouts.partials.header')
     <link rel="stylesheet" href="{{ asset('css/frontend/navbar-black.css') }}">
-    <title>Privacy Policy - Rumi's Collections</title>
+    <title>Privacy Policy | Rumi's Collections</title>
 </head>
 
 <body>
