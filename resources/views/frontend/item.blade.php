@@ -4,16 +4,41 @@
 <head>
     @include('frontend.layouts.partials.header')
     <link rel="icon" href="{{ asset('storage/' . $product->image) }}" type="image/png">
+
+    <!-- SEO Meta -->
+    <title>{{ $product->product_name ?? 'Product Details' }}</title>
+    <meta name="description" content="{{ Str::limit(strip_tags($product->description), 160, '') }}">
+    <meta name="keywords" content="Rumi's Collections, ">
+    <meta name="author" content="Rumi's Collections">
+    <meta name="robots" content="index, follow">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url()->current() }}" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+    <meta property="og:title" content="{{ $product->product_name }}" />
+    <meta property="og:description" content="{{ Str::limit(strip_tags($product->description), 200, '') }}" />
+    <meta property="og:image" content="{{ asset('storage/' . $product->image) }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="product" />
+    <meta property="og:site_name" content="Rumi's Collections" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ $product->product_name }}" />
+    <meta name="twitter:description" content="{{ Str::limit(strip_tags($product->description), 200, '') }}" />
+    <meta name="twitter:image" content="{{ asset('storage/' . $product->image) }}" />
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('css/frontend/navbar-black.css') }}">
     <link rel="stylesheet" href="{{ asset('css/frontend/productpage.css') }}">
-    <title>{{ $product->product_name ?? 'Product Details' }}</title>
+
     <style>
         /* Visual "disabled" state that remains clickable (so JS can react and show modal) */
         .btn-disabled {
             opacity: 0.65;
             cursor: not-allowed;
             pointer-events: auto;
-            /* ensure clicks are allowed so we can show the modal */
         }
 
         /* "ready" state when size is selected */

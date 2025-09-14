@@ -7,6 +7,7 @@ use App\Http\Controllers\customerAuthController;
 use App\Http\Controllers\customerDashboardController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\frontendController;
+use App\Http\Controllers\googleController;
 use App\Http\Controllers\orderController;
 use App\Http\Controllers\pdfController;
 use App\Http\Controllers\productCategoryController;
@@ -64,6 +65,9 @@ Route::prefix('customer')->name('customer.')->group(function () {
     Route::get('login', [CustomerAuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [CustomerAuthController::class, 'login'])->name('login.submit');
     Route::get('logout', [CustomerAuthController::class, 'logout'])->name('logout');
+    //Google Auth
+    Route::get('auth/google', [googleController::class, 'redirect'])->name('google.login');
+    Route::get('auth/google/callback', [googleController::class, 'callback']);
 
     // Customer Dashboard (Protected by middleware)
     Route::middleware(CustomerAuth::class)->group(function () {

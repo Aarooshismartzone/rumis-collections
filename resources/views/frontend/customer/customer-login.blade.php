@@ -100,7 +100,12 @@
                                 <a href="{{ route('customer.password.request') }}">Forgot Password</a>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                            <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+
+                            <!-- Google Sign In Button -->
+                            <a href="{{ route('customer.google.login') }}" class="btn btn-danger w-100">
+                                <i class="fab fa-google me-2"></i> Sign in with Google
+                            </a>
                         </form>
                         <div class="text-center">
                             <button class="toggle-btn" id="show-register">Don't have an account? Register</button>

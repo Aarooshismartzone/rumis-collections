@@ -27,9 +27,9 @@
 
         <div class="summary-box">
             <h5>Customer Details</h5>
-            <p><strong>Name:</strong> {{ $summary['customer_name'] ?? 'Guest' }}</p>
-            <p><strong>Email:</strong> {{ $summary['email'] ?? 'N/A' }}</p>
-            <p><strong>Phone:</strong> {{ $summary['phone'] ?? 'N/A' }}</p>
+            <p><strong>Name:</strong> {{ Session::get('customer_name') ?? 'Guest' }}</p>
+            <p><strong>Email:</strong> {{ Session::get('customer_email') ?? 'N/A' }}</p>
+            {{-- <p><strong>Phone:</strong> {{ $summary['phone'] ?? 'N/A' }}</p> --}}
 
             <hr>
 

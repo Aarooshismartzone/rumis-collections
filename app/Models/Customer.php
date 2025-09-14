@@ -20,6 +20,8 @@ class Customer extends Authenticatable implements CanResetPassword
         'fname',
         'lname',
         'username',
+        'google_id',
+        'google_token',
         'email',
         'pnum',
         'password',

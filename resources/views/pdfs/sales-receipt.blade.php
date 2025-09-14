@@ -70,12 +70,33 @@
         <strong>Transaction ID:</strong> {{ $payment->payment_id ?? 'N/A' }}
     </p>
 
-    <h3>Customer Details</h3>
+    {{-- <h3>Customer Details</h3>
     @if ($customer_type === 'Registered')
         <p><strong>Customer:</strong> {{ $order->customer->fname ?? 'N/A' }} {{ $order->customer->lname ?? '' }}</p>
     @else
         <p><strong>Guest Token:</strong> {{ $order->guest_token }}</p>
-    @endif
+    @endif --}}
+
+    <nav style="display: flex; justify-content: space-around;">
+        <div>
+            <h3>Delivery Details</h3>
+            <b>{{ $order->d_fname." ".$order->d_lname }}</b><br>
+            {{ $order->d_company ?? "" }}<br>
+            {{ $order->d_address_line_1 }}<br>
+            {{ $order->d_address_line_2 }}<br>
+            {{ $order->d_city.", ".$order->d_country }}<br>
+            {{ $order->d_pin_code }}
+        </div>
+        <div>
+            <h3>Billing Details</h3>
+            <b>{{ $order->b_fname." ".$order->b_lname }}</b><br>
+            {{ $order->b_company ?? "" }}<br>
+            {{ $order->b_address_line_1 }}<br>
+            {{ $order->b_address_line_2 }}<br>
+            {{ $order->b_city.", ".$order->b_country }}<br>
+            {{ $order->b_pin_code }}
+        </div>
+    </nav>
 
     <h3>Items Purchased:</h3>
     <table>

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('fname', 100); // First name
             $table->string('lname', 100)->nullable(); // Last name
+            $table->string('google_id')->nullable()->unique();
+            $table->string('google_token')->nullable();
             $table->string('username', 100)->unique(); // Username
             $table->string('email', 150)->unique(); // Email address
             $table->string('pnum', 15)->unique(); // Phone number

@@ -63,7 +63,7 @@
                             value="{{ $customer->lname ?? '' }}">
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">Company Name</label>
+                        <label class="form-label">Company Name (optional)</label>
                         <input name="delivery[company_name]" type="text" class="form-control"
                             value="{{ $customer->company_name ?? '' }}">
                     </div>
@@ -137,7 +137,7 @@
                         <input name="billing[lname]" type="text" class="form-control billing">
                     </div>
                     <div class="mb-2">
-                        <label class="form-label">Company Name</label>
+                        <label class="form-label">Company Name (optional)</label>
                         <input name="billing[company_name]" type="text" class="form-control billing">
                     </div>
                     <div class="mb-2">
