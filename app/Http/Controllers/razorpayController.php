@@ -91,6 +91,7 @@ class razorpayController extends Controller
 
                     if ($product) {
                         $product->increment('number_of_orders', $item->quantity);
+                        $product->decrement('stock', $item->quantity);
                     }
 
                     Orderitem::create([
@@ -138,7 +139,7 @@ class razorpayController extends Controller
                     $mail->Subject = 'Order #' . $order->id . " Payment Confirmed - Rumi's Collections";
                     $mail->Body = "
                     <p>A new order has been successfully paid.</p>
-                    <p><strong>Order ID:</strong> ' . $order->id . '</p>
+                    <p><strong>Order ID:</strong> " . $order->id . "</p>
                     <hr>
                     <p>This is an automated message from Rumi's Collections. For any queries, contact us at <a href='mailto:contact@rumiscollections.com'>contact@rumiscollections.com</a>.</p>
                 ";

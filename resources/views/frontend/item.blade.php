@@ -101,21 +101,25 @@
                         </div>
                     @endif
                     {{-- Action Buttons --}}
-                    <div class="row mt-4 g-3">
-                        <div class="col-md-6 col-12">
-                            <button type="button" id="addToCartBtn" data-slug="{{ $product->product_slug }}"
-                                class="btn btn-dark w-100 py-2 btn-disabled" aria-disabled="true">
-                                <i class="fa-solid fa-cart-plus me-2"></i> Add To Cart
-                            </button>
+                    @if ($product->stock > 0)
+                        <div class="row mt-4 g-3">
+                            <div class="col-md-6 col-12">
+                                <button type="button" id="addToCartBtn" data-slug="{{ $product->product_slug }}"
+                                    class="btn btn-dark w-100 py-2 btn-disabled" aria-disabled="true">
+                                    <i class="fa-solid fa-cart-plus me-2"></i> Add To Cart
+                                </button>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <a href="{{ route('frontend.addtowishlist', ['product_slug' => $product->product_slug]) }}"
+                                    class="btn btn-outline-secondary w-100 py-2">
+                                    <i class="fa-regular fa-heart me-2"></i> Add To Wishlist
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-md-6 col-12">
-                            <a href="{{ route('frontend.addtowishlist', ['product_slug' => $product->product_slug]) }}"
-                                class="btn btn-outline-secondary w-100 py-2">
-                                <i class="fa-regular fa-heart me-2"></i> Add To Wishlist
-                            </a>
-                        </div>
-                    </div>
-
+                    @else
+                        <div class="alert alert-warning" role="alert">
+                            This product is out of stock</div>
+                    @endif
                     {{-- Product Details --}}
                     <div class="mt-5">
                         <h5 class="pd-section-title">Product Details</h5>

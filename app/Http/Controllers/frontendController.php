@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Customeraddress;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductInfo;
@@ -37,7 +38,7 @@ class frontendController extends Controller
 
     public function home()
     {
-        $products = Product::all();
+        $products = Product::where('stock', '>', 0)->get();
         $customer = Session::has('customer_id') ? Customer::find(Session::get('customer_id')) : null;
 
         return view('frontend.home', compact('products', 'customer'));
@@ -87,7 +88,7 @@ class frontendController extends Controller
 
     public function shop($category_slug = null)
     {
-        $query = Product::query();
+        $query = Product::query()->where('stock', '>', 0);
 
         if ($category_slug) {
             $category = ProductCategory::where('category_slug', $category_slug)->first();
@@ -130,6 +131,7 @@ class frontendController extends Controller
             ->orWhereHas('productInfos', function ($q) use ($query) {
                 $q->where('value', 'like', "%$query%");
             })
+            ->where('stock', '>', 0)
             ->paginate(12);
 
         return view('frontend.shop', compact('products', 'query'));
@@ -180,7 +182,7 @@ class frontendController extends Controller
             $guest_token = null;
 
             // Fetch saved addresses for this customer
-            $addresses = \App\Models\Customeraddress::where('customer_id', $customer_id)->get();
+            $addresses = Customeraddress::where('customer_id', $customer_id)->get();
         } else {
             // If guest, check if guest_token exists, otherwise generate one
             if (!Session::has('guest_token')) {
@@ -202,6 +204,23 @@ class frontendController extends Controller
                 return $query->where('guest_token', $guest_token);
             })
             ->get();
+
+        $errors = [];
+
+        foreach ($carts as $cartitem) {
+            $product = $cartitem->product;
+
+            if ($product->stock == 0) {
+                $errors[] = "The product '{$product->name}' is out of stock.";
+            } elseif ($product->stock < $cartitem->quantity) {
+                $errors[] = "Insufficient stock for '{$product->name}'. Available: {$product->stock}, requested: {$cartitem->quantity}.";
+            }
+        }
+
+        if (!empty($errors)) {
+            return back()->with('msg', implode(' ', $errors));
+        }
+
 
         $generics = Generic::pluck('value', 'key')->toArray();
 
