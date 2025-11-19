@@ -24,7 +24,7 @@
                 @foreach ($categories as $category)
                     <div class="section-title pt-4">{{ $category->category_name }}</div>
                     <div class="row mt-2">
-                        @foreach ($category->products->sortByDesc('created_at')->take(4) as $product)
+                        @foreach ($category->products->where('is_featured', false)->shuffle()->take(4) as $product)
                             @include('frontend.layouts.partials.list')
                         @endforeach
                         <div class="text-center">

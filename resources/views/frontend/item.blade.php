@@ -8,7 +8,7 @@
     <!-- SEO Meta -->
     <title>{{ $product->product_name ?? 'Product Details' }}</title>
     <meta name="description" content="{{ Str::limit(strip_tags($product->description), 160, '') }}">
-    <meta name="keywords" content="Rumi's Collections, ">
+    <meta name="keywords" content="Rumi's Collections, {{ $product->meta_keywords }}">
     <meta name="author" content="Rumi's Collections">
     <meta name="robots" content="index, follow">
 
@@ -47,6 +47,30 @@
             cursor: pointer;
         }
     </style>
+
+    <!-- Schema.org JSON-LD Product Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "{{ $product->product_name ?? $product->title }}",
+      "image": "{{ asset('storage/' . $product->image) }}",
+      "description": "{{ strip_tags($product->meta_description ?? $product->description) }}",
+      "sku": "{{ $product->sku ?? 'SKU-' . $product->id }}",
+      "brand": {
+        "@type": "Brand",
+        "name": "Rumi's Collections"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ url()->current() }}",
+        "priceCurrency": "INR",
+        "price": "{{ $product->price ?? '0' }}",
+        "availability": "https://schema.org/{{ ($product->stock ?? 0) <= 0 ? 'OutOfStock' : 'InStock' }}",
+        "itemCondition": "https://schema.org/NewCondition"
+      }
+    }
+    </script>
 </head>
 
 <body style="font-family: 'Poppins', sans-serif; background-color: #f8f9fa;">

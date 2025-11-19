@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\Orderitem;
 use App\Models\ProductCategory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use PHPMailer\PHPMailer\Exception;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -112,6 +113,29 @@ class frontendController extends Controller
     {
         $product = Product::where('product_slug', $product_slug)->firstOrFail();
         $productinfos = ProductInfo::where('product_id', $product->id)->get();
+
+        // // --- View Tracking Logic ---
+        // $productId = $product->id;
+        // $userIp = request()->ip();
+        // $customerId = Session::get('customer_id');
+
+        // // Build unique key for tracking view (per product + user)
+        // $viewKey = $customerId
+        //     ? 'product_view_customer_' . $customerId . '_' . $productId
+        //     : 'product_view_guest_' . $userIp . '_' . $productId;
+
+        // $lastViewed = Cache::get($viewKey);
+
+        // // Check if viewed more than 24 hours ago (or not viewed yet)
+        // if (!$lastViewed || now()->diffInHours($lastViewed) >= 24) {
+        //     // Increment the view count
+        //     $product->increment('view');
+
+        //     // Store current timestamp in cache for 24 hours reference
+        //     Cache::put($viewKey, now(), now()->addHours(24));
+        // }
+
+        // // --- End of View Tracking ---
 
         return view('frontend.item', compact('product', 'productinfos'));
     }
